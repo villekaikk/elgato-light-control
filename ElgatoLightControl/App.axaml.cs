@@ -38,6 +38,7 @@ public partial class App : Application
                 RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
 
                 services
+                    .AddSingleton<DeviceListViewModel>()
                     .AddSingleton<IElgatoDeviceService, ElgatoDeviceService>()
                     .AddSingleton<IElgatoLightController, ElgatoLightController>()
                     .AddHttpClient();

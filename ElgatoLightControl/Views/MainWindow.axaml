@@ -16,12 +16,13 @@
     </Design.DataContext>
 
     <Grid ColumnDefinitions="1*, 4*" RowDefinitions="1*, 15*" Margin="6" ColumnSpacing="6" RowSpacing="4">
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <TextBlock TextAlignment="Center" FontWeight="Bold" >Elgato Light Control</TextBlock>
-        </StackPanel>
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold">
+            Elgato Light Control
+        </TextBlock>
         
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
-            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Device list</TextBlock>
+            <ContentControl Content="{Binding DeviceListViewModel}" />
+            <!-- <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Device list</TextBlock> -->
         </Border>
         
         <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
