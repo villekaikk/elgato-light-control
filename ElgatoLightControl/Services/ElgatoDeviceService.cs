@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ElgatoLightControl.Models;
+using ElgatoLightControl.Models.Keylight;
 using Zeroconf;
 
 namespace ElgatoLightControl.Services;
@@ -15,10 +16,10 @@ public class ElgatoDeviceService(IElgatoLightController lightController) : IElga
         try
         {
             var results = (await ZeroconfResolver.ResolveAsync("_elg._tcp.local.")).ToList();
-            foreach (var device in devices)
+            foreach (var device in results)
             {
-                var settings = lightController.GetDevice(device.IpAddress);
-                
+                var settings = await lightController.GetDevice(device.IPAddress);
+                devices.Add(new Keylight(device.IPAddress, device.DisplayName, settings));
             }
         }
         catch (Exception ex)

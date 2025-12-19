@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using ElgatoLightControl.Services;
 using ReactiveUI;
@@ -9,16 +10,16 @@ public class DeviceListViewModel: ViewModelBase
 {
     private readonly IElgatoDeviceService _deviceService;
     
-    public DeviceListViewModel(IElgatoDeviceService deviceService)
-    {
-        Console.WriteLine("CCtor");
-        _deviceService = deviceService;
-    }
-
     public DeviceListViewModel()
     {
-        Console.WriteLine("Wrong ctor");
-        _deviceService = new ElgatoDeviceService(null!);
+        Console.WriteLine("Wrong Ctor");
+        _deviceService = null!;
+    }
+
+    public DeviceListViewModel(IElgatoDeviceService deviceService)
+    {
+        Console.WriteLine("Ctor");
+        _deviceService = deviceService;
         _ = Task.Run(LoadDevicesAsync);
     }
     
@@ -26,7 +27,11 @@ public class DeviceListViewModel: ViewModelBase
     {
         Console.WriteLine("Pressing...");
         var devices = await _deviceService.ListDevices();
-        foreach (var device in devices)
+        var elgatoDevices = devices.ToList();
+        if (!elgatoDevices.Any())
+            Console.WriteLine("No devices found");
+        
+        foreach (var device in elgatoDevices)
         {
             Console.WriteLine($"Device: {device.DeviceType.ToString()}, {device.DisplayName}, {device.IpAddress}");
         }
