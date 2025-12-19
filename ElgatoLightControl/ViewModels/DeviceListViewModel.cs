@@ -5,12 +5,13 @@ using ReactiveUI;
 
 namespace ElgatoLightControl.ViewModels;
 
-public class DeviceListViewModel: ReactiveObject
+public class DeviceListViewModel: ViewModelBase
 {
     private readonly IElgatoDeviceService _deviceService;
     
     public DeviceListViewModel(IElgatoDeviceService deviceService)
     {
+        Console.WriteLine("CCtor");
         _deviceService = deviceService;
     }
 

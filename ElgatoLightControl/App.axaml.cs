@@ -7,10 +7,10 @@ using ElgatoLightControl.Services;
 using ElgatoLightControl.ViewModels;
 using ElgatoLightControl.Views;
 using Microsoft.Extensions.DependencyInjection;
-using Splat;
-using Splat.Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ReactiveUI;
+using Splat;
+using Splat.Microsoft.Extensions.DependencyInjection;
 
 namespace ElgatoLightControl;
 
@@ -38,9 +38,10 @@ public partial class App : Application
                 RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
 
                 services
+                    .AddSingleton<MainWindowViewModel>()
                     .AddSingleton<DeviceListViewModel>()
                     .AddSingleton<IElgatoDeviceService, ElgatoDeviceService>()
-                    .AddSingleton<IElgatoLightController, ElgatoLightController>()
+                    .AddTransient<IElgatoLightController, ElgatoLightController>()
                     .AddHttpClient();
             });
         

@@ -11,13 +11,11 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        Console.WriteLine("Wrong Ctor");
         _deviceListViewModel = new DeviceListViewModel();
     }
     
     public MainWindowViewModel(DeviceListViewModel deviceListViewModel)
     {
-        Console.WriteLine("Ctor");
         _deviceListViewModel = deviceListViewModel;
     }
     
