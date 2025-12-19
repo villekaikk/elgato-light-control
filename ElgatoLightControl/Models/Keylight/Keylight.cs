@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using Zeroconf;
 
-namespace ElgatoLightControl.Models;
+namespace ElgatoLightControl.Models.Keylight;
 
 public record Keylight(
     string IpAddress,
@@ -9,7 +9,7 @@ public record Keylight(
     KeylightSettings? Settings
 ) : IElgatoDevice(IpAddress, DisplayName)
 {
-    public ElgatoDeviceType DeviceType => ElgatoDeviceType.KeylightAir;
+    public new ElgatoDeviceType DeviceType => ElgatoDeviceType.KeylightAir;
 }
 
 public static class KeylightExtensions

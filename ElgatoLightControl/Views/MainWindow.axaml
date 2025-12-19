@@ -10,8 +10,6 @@
         Title="Elgato Light Control">
 
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
@@ -22,7 +20,6 @@
         
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="1">
             <ContentControl Content="{Binding DeviceListViewModel}" />
-            <!-- <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Device list</TextBlock> -->
         </Border>
         
         <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
