@@ -3,7 +3,7 @@ using Zeroconf;
 
 namespace ElgatoLightControl.Models;
 
-public record ElgatoKeylightDevice(
+public record Keylight(
     string IpAddress,
     string DisplayName,
     KeylightSettings? Settings
@@ -12,9 +12,9 @@ public record ElgatoKeylightDevice(
     public ElgatoDeviceType DeviceType => ElgatoDeviceType.KeylightAir;
 }
 
-public static class ElgatoKeylightExtensions
+public static class KeylightExtensions
 {
-    public static ElgatoKeylightDevice ToKeyLight(this IZeroconfHost deviceMetaData, KeylightSettings? settings)
+    public static Keylight ToKeyLight(this IZeroconfHost deviceMetaData, KeylightSettings? settings)
         => new(
             deviceMetaData.DisplayName,
             deviceMetaData.IPAddress,
