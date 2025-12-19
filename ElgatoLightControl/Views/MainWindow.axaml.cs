@@ -1,5 +1,5 @@
 using Avalonia.ReactiveUI;
-using ElgatoLightControl.ViewModels;
+using ElgatoLightControl.ViewModels.Views;
 using ReactiveUI;
 
 namespace ElgatoLightControl.Views;

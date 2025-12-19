@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:ElgatoLightControl.ViewModels"
+             xmlns:vm="clr-namespace:ElgatoLightControl.ViewModels.Views"
              mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="400"
              x:Class="ElgatoLightControl.Views.DeviceListView"
              x:DataType="vm:DeviceListViewModel">
@@ -12,6 +12,8 @@
     </Design.DataContext>
     
     <StackPanel>
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Device list</TextBlock>
+        <ListBox ItemsSource="{Binding Devices}">
+            
+        </ListBox>
     </StackPanel>
 </UserControl>

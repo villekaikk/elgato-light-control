@@ -1,6 +1,6 @@
 using ElgatoLightControl.Models;
 
-namespace ElgatoLightControl.DTO;
+namespace ElgatoLightControl.Services.DTO;
 
 public class KeylightSettingsDto
 {

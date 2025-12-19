@@ -1,31 +1,38 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ElgatoLightControl.Services;
+using ElgatoLightControl.ViewModels.Models;
 using ReactiveUI;
 
-namespace ElgatoLightControl.ViewModels;
+namespace ElgatoLightControl.ViewModels.Views;
 
-public class DeviceListViewModel: ViewModelBase
+public class DeviceListViewModel: ReactiveObject
 {
     private readonly IElgatoDeviceService _deviceService;
     
+    private ObservableCollection<IElgatoDeviceViewModel> _devices = [];
+
+    public ObservableCollection<IElgatoDeviceViewModel> Devices
+    {
+        get => _devices;
+        set => this.RaiseAndSetIfChanged(ref _devices, value);
+    }
+
     public DeviceListViewModel()
     {
-        Console.WriteLine("Wrong Ctor");
         _deviceService = null!;
     }
 
     public DeviceListViewModel(IElgatoDeviceService deviceService)
     {
-        Console.WriteLine("Ctor");
         _deviceService = deviceService;
         _ = Task.Run(LoadDevicesAsync);
     }
     
     private async Task LoadDevicesAsync()
     {
-        Console.WriteLine("Pressing...");
         var devices = await _deviceService.ListDevices();
         var elgatoDevices = devices.ToList();
         if (!elgatoDevices.Any())

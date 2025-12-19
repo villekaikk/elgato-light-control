@@ -1,11 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using ElgatoLightControl.Services;
-using ReactiveUI;
+﻿using ReactiveUI;
 
-namespace ElgatoLightControl.ViewModels;
+namespace ElgatoLightControl.ViewModels.Views;
 
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : ReactiveObject
 {
     private DeviceListViewModel _deviceListViewModel;
 

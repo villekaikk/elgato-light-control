@@ -1,6 +1,6 @@
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
-using ElgatoLightControl.ViewModels;
+using ElgatoLightControl.ViewModels.Views;
 
 namespace ElgatoLightControl.Views;
 

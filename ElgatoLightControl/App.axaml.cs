@@ -4,7 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ElgatoLightControl.Services;
-using ElgatoLightControl.ViewModels;
+using ElgatoLightControl.ViewModels.Views;
 using ElgatoLightControl.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ElgatoLightControl.Models;
-using ElgatoLightControl.DTO;
+using ElgatoLightControl.Services.DTO;
 
 namespace ElgatoLightControl.Services;
 
