@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using ElgatoLightControl.Models;
 using ElgatoLightControl.Models.Keylight;
+using ElgatoLightControl.Services.Factories;
 using Zeroconf;
 
 namespace ElgatoLightControl.Services;
 
-public class ElgatoDeviceService(IElgatoLightController lightController) : IElgatoDeviceService
+public class ElgatoDeviceService(IElgatoDeviceControllerFactory ctrlFactory) : IElgatoDeviceService
 {
     public async Task<IEnumerable<IElgatoDevice>> ListDevices()
     {
@@ -18,7 +19,9 @@ public class ElgatoDeviceService(IElgatoLightController lightController) : IElga
             var results = (await ZeroconfResolver.ResolveAsync("_elg._tcp.local.")).ToList();
             foreach (var device in results)
             {
-                var settings = await lightController.GetDevice(device.IPAddress);
+                var devType = device.DisplayName.ToDeviceType();
+                var controller = ctrlFactory.GetController(devType);
+                var settings = await controller.GetDevice(device.IPAddress);
                 devices.Add(new Keylight(device.IPAddress, device.DisplayName, settings));
             }
         }
@@ -28,23 +31,12 @@ public class ElgatoDeviceService(IElgatoLightController lightController) : IElga
             Console.WriteLine(ex.Message);
         }
 
+        Console.WriteLine($"Found {devices.Count()} devices");
         return devices;
     }
 
     public Task UpdateDevice(IElgatoDevice elgatoDevice)
     {
-        throw new System.NotImplementedException();
-    }
-
-    private void ToDevice(IZeroconfHost conf)
-    {
-        var deviceType = conf.DisplayName.ToDeviceType();
-        switch (deviceType)
-        {
-            case ElgatoDeviceType.KeylightAir:
-                break;
-            default:
-                throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 }

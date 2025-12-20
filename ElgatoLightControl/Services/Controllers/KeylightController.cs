@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using ElgatoLightControl.Models;
 using ElgatoLightControl.Services.DTO;
 
-namespace ElgatoLightControl.Services;
+namespace ElgatoLightControl.Services.Controllers;
 
-public class ElgatoLightController(IHttpClientFactory clientFactory) : IElgatoLightController
+public class KeylightController(IHttpClientFactory clientFactory) : IElgatoDeviceController
 {
     private static readonly string DeviceUrl = "http://{0}:9123/elgato/lights";
     public Task<KeylightSettings?> UpdateDevice(IElgatoDevice device)
@@ -18,7 +18,6 @@ public class ElgatoLightController(IHttpClientFactory clientFactory) : IElgatoLi
     public async Task<KeylightSettings?> GetDevice(string ipaddress)
     {
         var url = string.Format(DeviceUrl, ipaddress);
-        Console.WriteLine(url);
         using var client = clientFactory.CreateClient();
         using var request = new HttpRequestMessage(HttpMethod.Get, url);
         try

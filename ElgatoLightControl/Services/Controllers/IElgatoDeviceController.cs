@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using ElgatoLightControl.Models;
 
-namespace ElgatoLightControl.Services;
+namespace ElgatoLightControl.Services.Controllers;
 
-public interface IElgatoLightController
+public interface IElgatoDeviceController
 {
     public Task<KeylightSettings?> UpdateDevice(IElgatoDevice device);
     public Task<KeylightSettings?> GetDevice(string ipaddress);

@@ -4,6 +4,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ElgatoLightControl.Services;
+using ElgatoLightControl.Services.Controllers;
+using ElgatoLightControl.Services.Factories;
 using ElgatoLightControl.ViewModels.Views;
 using ElgatoLightControl.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,7 +43,8 @@ public partial class App : Application
                     .AddSingleton<MainWindowViewModel>()
                     .AddSingleton<DeviceListViewModel>()
                     .AddSingleton<IElgatoDeviceService, ElgatoDeviceService>()
-                    .AddTransient<IElgatoLightController, ElgatoLightController>()
+                    .AddTransient<KeylightController>()
+                    .AddSingleton<IElgatoDeviceControllerFactory, ElgatoDeviceControllerFactory>()
                     .AddHttpClient();
             });
         

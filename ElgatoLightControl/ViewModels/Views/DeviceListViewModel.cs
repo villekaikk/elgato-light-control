@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ElgatoLightControl.Services;
+using ElgatoLightControl.Services.Factories;
 using ElgatoLightControl.ViewModels.Models;
 using ReactiveUI;
 
