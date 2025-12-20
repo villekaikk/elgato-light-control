@@ -43,6 +43,7 @@ public partial class App : Application
                     .AddSingleton<MainWindowViewModel>()
                     .AddSingleton<DeviceListViewModel>()
                     .AddSingleton<IElgatoDeviceService, ElgatoDeviceService>()
+                    .AddTransient<AccessoryInfoController>()
                     .AddTransient<KeylightController>()
                     .AddSingleton<IElgatoDeviceControllerFactory, ElgatoDeviceControllerFactory>()
                     .AddHttpClient();

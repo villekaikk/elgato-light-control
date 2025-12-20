@@ -4,11 +4,11 @@ namespace ElgatoLightControl.Services.DTO;
 
 public class KeylightSettingsDto
 {
-    public bool On { get; set; }
+    public bool On { get; init; }
     
-    public int Brightness { get; set; }
+    public int Brightness { get; init; }
     
-    public int Temperature { get; set; }
+    public int Temperature { get; init; }
 }
 
 public static class KeylightSettingsDtoExtensions

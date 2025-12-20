@@ -6,5 +6,5 @@ namespace ElgatoLightControl.Services.Controllers;
 public interface IElgatoDeviceController
 {
     public Task<KeylightSettings?> UpdateDevice(IElgatoDevice device);
-    public Task<KeylightSettings?> GetDevice(string ipaddress);
+    public Task<KeylightSettings?> GetDevice(string ipAddress);
 }

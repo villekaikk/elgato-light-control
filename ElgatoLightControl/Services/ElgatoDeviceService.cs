@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using ElgatoLightControl.Models;
 using ElgatoLightControl.Models.Keylight;
+using ElgatoLightControl.Services.Controllers;
 using ElgatoLightControl.Services.Factories;
 using Zeroconf;
 
 namespace ElgatoLightControl.Services;
 
-public class ElgatoDeviceService(IElgatoDeviceControllerFactory ctrlFactory) : IElgatoDeviceService
+public class ElgatoDeviceService(IElgatoDeviceControllerFactory ctrlFactory, AccessoryInfoController aInfoCtrl) : IElgatoDeviceService
 {
     public async Task<IEnumerable<IElgatoDevice>> ListDevices()
     {
@@ -19,9 +20,11 @@ public class ElgatoDeviceService(IElgatoDeviceControllerFactory ctrlFactory) : I
             var results = (await ZeroconfResolver.ResolveAsync("_elg._tcp.local.")).ToList();
             foreach (var device in results)
             {
-                var devType = device.DisplayName.ToDeviceType();
+                var accInfo = await aInfoCtrl.GetInfo(device.IPAddress);
+                var devType = accInfo.ProductName.ToDeviceType();
                 var controller = ctrlFactory.GetController(devType);
                 var settings = await controller.GetDevice(device.IPAddress);
+                
                 devices.Add(new Keylight(device.IPAddress, device.DisplayName, settings));
             }
         }

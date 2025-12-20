@@ -7,31 +7,28 @@ using ElgatoLightControl.Services.DTO;
 
 namespace ElgatoLightControl.Services.Controllers;
 
-public class KeylightController(IHttpClientFactory clientFactory) : IElgatoDeviceController
+public class AccessoryInfoController(IHttpClientFactory clientFactory)
 {
-    private static readonly string DeviceUrl = "http://{0}:9123/elgato/lights";
-    public Task<KeylightSettings?> UpdateDevice(IElgatoDevice device)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<KeylightSettings?> GetDevice(string ipAddress)
+    private static readonly string DeviceUrl = "http://{0}:9123/elgato/accessory-info";
+    public async Task<AccessoryInfo?> GetInfo(string ipAddress)
     {
         var url = string.Format(DeviceUrl, ipAddress);
         using var client = clientFactory.CreateClient();
         using var request = new HttpRequestMessage(HttpMethod.Get, url);
+        
         try
         {
             using var response = await client.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Unable to get device settings {url}, {response.StatusCode}, {content}");
+                Console.WriteLine($"Unable to get accessory info {url}, {response.StatusCode}, {content}");
                 return null;
             }
-            
-            var dto = JsonSerializer.Deserialize<KeylightSettingsDto>(await response.Content.ReadAsStringAsync());
-            return dto?.ToKeylightSettings();
+
+            var stringContent = await response.Content.ReadAsStringAsync();
+            var dto = JsonSerializer.Deserialize<AccessoryInfoDto>(stringContent);
+            return dto?.ToAccessoryInfo();
         }
         catch (Exception ex)
         {

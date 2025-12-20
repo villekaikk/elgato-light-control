@@ -7,9 +7,14 @@ namespace ElgatoLightControl.Services.Factories;
 
 public class ElgatoDeviceControllerFactory(IServiceProvider serviceProvider) : IElgatoDeviceControllerFactory
 {
-    public IElgatoDeviceController GetController(ElgatoDeviceType deviceType) => deviceType switch
+    public IElgatoDeviceController GetController(ElgatoDeviceType deviceType)
     {
-        ElgatoDeviceType.KeylightAir => serviceProvider.GetService<KeylightController>()!,
-        _ => throw new NotImplementedException()
-    };
+        IElgatoDeviceController? controller = deviceType switch
+        {
+            ElgatoDeviceType.KeylightAir => serviceProvider.GetService<KeylightController>(),
+            _ => null
+        };
+
+        return controller ?? throw new NullReferenceException($"Unable to resolve controller for device type {deviceType}");;
+    }
 }
