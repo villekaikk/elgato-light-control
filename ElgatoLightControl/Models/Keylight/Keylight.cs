@@ -11,13 +11,3 @@ public record Keylight(
     public override ElgatoDeviceType DeviceType => ElgatoDeviceType.KeylightAir;
     public new KeylightSettings DeviceSettings => KDeviceSettings;
 }
-
-public static class KeylightExtensions
-{
-    public static Keylight ToKeyLight(this IZeroconfHost deviceMetaData, KeylightSettings settings)
-        => new(
-            deviceMetaData,
-            settings,
-            null
-            );
-}
