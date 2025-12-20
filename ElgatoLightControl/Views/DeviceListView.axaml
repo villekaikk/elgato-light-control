@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:ElgatoLightControl.ViewModels.Views"
              xmlns:model="clr-namespace:ElgatoLightControl.ViewModels.Models"
-             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="400"
+             mc:Ignorable="d" d:DesignWidth="160" d:DesignHeight="400"
              x:Class="ElgatoLightControl.Views.DeviceListView"
              x:DataType="vm:DeviceListViewModel">
     
