@@ -13,21 +13,18 @@ namespace ElgatoLightControl.ViewModels.Views;
 public class DeviceListViewModel: ReactiveObject
 {
     private readonly IElgatoDeviceService _deviceService;
-    
-    private ElgatoDeviceListViewModel? _selectedDevice;
 
     public ElgatoDeviceListViewModel? SelectedDevice
     {
-        get => _selectedDevice;
-        set => this.RaiseAndSetIfChanged(ref _selectedDevice, value);
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
-    
-    private ObservableCollection<ElgatoDeviceListViewModel> _devices = [];
+
 
     public ObservableCollection<ElgatoDeviceListViewModel> Devices
     {
-        get => _devices;
-        set => this.RaiseAndSetIfChanged(ref _devices, value);
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public DeviceListViewModel()
@@ -45,12 +42,10 @@ public class DeviceListViewModel: ReactiveObject
     {
         _deviceService = deviceService;
         SelectedDevice = null;
-        Devices = new ObservableCollection<ElgatoDeviceListViewModel>();
+        Devices = [];
         _ = Task.Run(LoadDevicesAsync);
         
-        _deviceService = null!;
-        SelectedDevice = null;
-        }
+    }
     
     private async Task LoadDevicesAsync()
     {
