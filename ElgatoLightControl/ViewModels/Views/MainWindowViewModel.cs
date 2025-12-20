@@ -2,15 +2,21 @@
 
 namespace ElgatoLightControl.ViewModels.Views;
 
-public class MainWindowViewModel(DeviceListViewModel deviceListViewModel) : ReactiveObject
+public class MainWindowViewModel : ReactiveObject
 {
-    private DeviceListViewModel _deviceListViewModel = deviceListViewModel;
+    public MainWindowViewModel()
+    {
+        DeviceListViewModel = new DeviceListViewModel();
+    }
 
-    public MainWindowViewModel() : this(new DeviceListViewModel()) { }
+    public MainWindowViewModel(DeviceListViewModel deviceListViewModel)
+    {
+        DeviceListViewModel = deviceListViewModel;
+    }
 
     public DeviceListViewModel DeviceListViewModel
     {
-        get => _deviceListViewModel;
-        set => this.RaiseAndSetIfChanged(ref _deviceListViewModel, value);
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 }

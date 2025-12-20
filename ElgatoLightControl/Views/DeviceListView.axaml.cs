@@ -8,6 +8,6 @@ public partial class DeviceListView : ReactiveUserControl<DeviceListViewModel>
 {
     public DeviceListView()
     {
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
     }
 }

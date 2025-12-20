@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -40,13 +41,15 @@ public partial class App : Application
                 RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
 
                 services
-                    .AddSingleton<MainWindowViewModel>()
                     .AddSingleton<DeviceListViewModel>()
+                    .AddSingleton<MainWindowViewModel>()
                     .AddSingleton<IElgatoDeviceService, ElgatoDeviceService>()
                     .AddTransient<AccessoryInfoController>()
                     .AddTransient<KeylightController>()
                     .AddSingleton<IElgatoDeviceControllerFactory, ElgatoDeviceControllerFactory>()
                     .AddHttpClient();
+                
+                Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
             });
         
         _host = hostBuilder.Build();

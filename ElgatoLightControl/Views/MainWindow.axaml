@@ -18,7 +18,7 @@
             Elgato Light Control
         </TextBlock>
         
-        <ContentControl Content="{Binding DeviceListViewModel}" Grid.Row="1" Grid.Column="1" />
+        <ContentControl Content="{Binding DeviceListViewModel}" Grid.Row="1" Grid.Column="0" />
         
         <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1">
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Device Settings</TextBlock>

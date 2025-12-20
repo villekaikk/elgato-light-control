@@ -20,7 +20,6 @@ public class DeviceListViewModel: ReactiveObject
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-
     public ObservableCollection<ElgatoDeviceListViewModel> Devices
     {
         get;
