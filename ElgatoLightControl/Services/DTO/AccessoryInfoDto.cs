@@ -6,13 +6,13 @@ namespace ElgatoLightControl.Services.DTO;
 public class AccessoryInfoDto
 {
     [JsonPropertyName("productName")]
-    public string ProductName { get; init; }
+    public string ProductName { get; init; } = string.Empty;
     
     [JsonPropertyName("firmwareVersion")]
-    public string FirmwareVersion { get; init; }
+    public string FirmwareVersion { get; init; } = string.Empty;
     
     [JsonPropertyName("serialNumber")]
-    public string SerialNumber { get; init; }
+    public string SerialNumber { get; init; } = string.Empty;
 }
 
 public static class AccessoryInfoDtoExtensions

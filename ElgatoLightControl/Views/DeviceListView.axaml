@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:ElgatoLightControl.ViewModels.Views"
+             xmlns:vmm="clr-namespace:ElgatoLightControl.ViewModels.Models"
              mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="400"
              x:Class="ElgatoLightControl.Views.DeviceListView"
              x:DataType="vm:DeviceListViewModel">
@@ -12,8 +13,14 @@
     </Design.DataContext>
     
     <StackPanel>
-        <ListBox ItemsSource="{Binding Devices}">
-            
+        <ListBox ItemsSource="{Binding Devices}" SelectedItem="{Binding SelectedDevice}">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="vmm:ElgatoDeviceListViewModel">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding DisplayName}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
     </StackPanel>
 </UserControl>
