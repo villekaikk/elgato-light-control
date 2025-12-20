@@ -24,8 +24,10 @@ public class ElgatoDeviceService(IElgatoDeviceControllerFactory ctrlFactory, Acc
                 var devType = accInfo.ProductName.ToDeviceType();
                 var controller = ctrlFactory.GetController(devType);
                 var settings = await controller.GetDevice(device.IPAddress);
+
+                var instance = ToDeviceInstance(devType, device, settings, accInfo);
                 
-                devices.Add(new Keylight(device.IPAddress, device.DisplayName, settings));
+                devices.Add(instance);
             }
         }
         catch (Exception ex)
@@ -36,6 +38,20 @@ public class ElgatoDeviceService(IElgatoDeviceControllerFactory ctrlFactory, Acc
 
         Console.WriteLine($"Found {devices.Count()} devices");
         return devices;
+    }
+
+    private IElgatoDevice ToDeviceInstance(ElgatoDeviceType deviceType, IZeroconfHost deviceConfig,
+        ElgatoDeviceSettings settings, AccessoryInfo accessoryInfo)
+    {
+        switch (deviceType)
+        {
+            case ElgatoDeviceType.KeylightAir:
+                KeylightSettings klSettings = (settings as KeylightSettings)!; 
+                return new Keylight(deviceConfig, klSettings, accessoryInfo);
+            default:
+                throw new NotImplementedException();
+        }
+        
     }
 
     public Task UpdateDevice(IElgatoDevice elgatoDevice)

@@ -1,6 +1,8 @@
+using Zeroconf;
+
 namespace ElgatoLightControl.Models;
 
-public abstract record IElgatoDevice(string IpAddress, string DisplayName)
+public abstract record IElgatoDevice(IZeroconfHost DeviceConfig, ElgatoDeviceSettings DeviceSettings, AccessoryInfo AccessoryInfo)
 {
-    public ElgatoDeviceType DeviceType { get; }
+    public abstract ElgatoDeviceType DeviceType { get; }
 }

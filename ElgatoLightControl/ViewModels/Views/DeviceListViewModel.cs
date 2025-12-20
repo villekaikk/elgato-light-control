@@ -3,8 +3,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ElgatoLightControl.Models;
+using ElgatoLightControl.Models.Keylight;
 using ElgatoLightControl.Services;
-using ElgatoLightControl.Services.Factories;
 using ElgatoLightControl.ViewModels.Models;
 using ReactiveUI;
 
@@ -56,7 +56,7 @@ public class DeviceListViewModel: ReactiveObject
         
         foreach (var device in elgatoDevices)
         {
-            Console.WriteLine($"Device: {device.DeviceType.ToString()}, {device.DisplayName}, {device.IpAddress}");
+            Devices.Add(new ElgatoDeviceListViewModel(device));
         }
     }
 }

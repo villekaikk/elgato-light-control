@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ElgatoLightControl.Models;
+using ElgatoLightControl.Models.Keylight;
 using ElgatoLightControl.Services.DTO;
 
 namespace ElgatoLightControl.Services.Controllers;
@@ -10,12 +11,12 @@ namespace ElgatoLightControl.Services.Controllers;
 public class KeylightController(IHttpClientFactory clientFactory) : IElgatoDeviceController
 {
     private static readonly string DeviceUrl = "http://{0}:9123/elgato/lights";
-    public Task<KeylightSettings?> UpdateDevice(IElgatoDevice device)
+    public Task<ElgatoDeviceSettings> UpdateDevice(IElgatoDevice device)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<KeylightSettings?> GetDevice(string ipAddress)
+    public async Task<ElgatoDeviceSettings> GetDevice(string ipAddress)
     {
         var url = string.Format(DeviceUrl, ipAddress);
         using var client = clientFactory.CreateClient();
@@ -27,11 +28,12 @@ public class KeylightController(IHttpClientFactory clientFactory) : IElgatoDevic
             {
                 var content = await response.Content.ReadAsStringAsync();
                 Console.WriteLine($"Unable to get device settings {url}, {response.StatusCode}, {content}");
-                return null;
+                return KeylightSettings.None;
             }
             
             var dto = JsonSerializer.Deserialize<KeylightSettingsDto>(await response.Content.ReadAsStringAsync());
-            return dto?.ToKeylightSettings();
+            var settings = dto?.ToKeylightSettings(); 
+            return settings ??  KeylightSettings.None;
         }
         catch (Exception ex)
         {

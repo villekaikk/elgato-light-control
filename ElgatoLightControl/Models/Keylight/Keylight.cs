@@ -1,23 +1,23 @@
-using System.Runtime.CompilerServices;
 using Zeroconf;
 
 namespace ElgatoLightControl.Models.Keylight;
 
 public record Keylight(
-    string IpAddress,
-    string DisplayName,
-    KeylightSettings? Settings
-) : IElgatoDevice(IpAddress, DisplayName)
+    IZeroconfHost DeviceConfig,
+    KeylightSettings KDeviceSettings,
+    AccessoryInfo AccessoryInfo
+) : IElgatoDevice(DeviceConfig, KDeviceSettings, AccessoryInfo)
 {
-    public new ElgatoDeviceType DeviceType => ElgatoDeviceType.KeylightAir;
+    public override ElgatoDeviceType DeviceType => ElgatoDeviceType.KeylightAir;
+    public new KeylightSettings DeviceSettings => KDeviceSettings;
 }
 
 public static class KeylightExtensions
 {
-    public static Keylight ToKeyLight(this IZeroconfHost deviceMetaData, KeylightSettings? settings)
+    public static Keylight ToKeyLight(this IZeroconfHost deviceMetaData, KeylightSettings settings)
         => new(
-            deviceMetaData.DisplayName,
-            deviceMetaData.IPAddress,
-            settings
+            deviceMetaData,
+            settings,
+            null
             );
 }

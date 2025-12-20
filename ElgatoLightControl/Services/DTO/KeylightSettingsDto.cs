@@ -1,4 +1,4 @@
-using ElgatoLightControl.Models;
+using ElgatoLightControl.Models.Keylight;
 
 namespace ElgatoLightControl.Services.DTO;
 

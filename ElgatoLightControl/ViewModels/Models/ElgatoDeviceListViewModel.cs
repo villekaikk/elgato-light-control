@@ -17,7 +17,7 @@ public class ElgatoDeviceListViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
-    public IElgatoDeviceSettings Settings
+    public ElgatoDeviceSettings Settings
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -25,11 +25,19 @@ public class ElgatoDeviceListViewModel : ReactiveObject
 
     public ElgatoDeviceType DeviceType { get; set; }
 
-    public ElgatoDeviceListViewModel(string displayName, string firmwareVersion, IElgatoDeviceSettings settings, ElgatoDeviceType deviceType)
+    public ElgatoDeviceListViewModel(string displayName, string firmwareVersion, ElgatoDeviceSettings settings, ElgatoDeviceType deviceType)
     {
         DisplayName = displayName;
         FirmwareVersion = firmwareVersion;
         Settings = settings;
         DeviceType = deviceType;
+    }
+
+    public ElgatoDeviceListViewModel(IElgatoDevice device)
+    {
+        DisplayName = device.DeviceConfig.DisplayName;
+        FirmwareVersion = device.AccessoryInfo.FirmwareVersion;
+        Settings = device.DeviceSettings;
+        DeviceType = device.DeviceType;
     }
 }
