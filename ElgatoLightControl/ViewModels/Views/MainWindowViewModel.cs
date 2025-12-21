@@ -9,9 +9,10 @@ namespace ElgatoLightControl.ViewModels.Views;
 
 public class MainWindowViewModel : ReactiveObject
 {
-    private IServiceProvider _serviceProvider;
+    private readonly IServiceProvider _serviceProvider;
     public MainWindowViewModel()
     {
+        _serviceProvider = null!;
         DeviceSettingsViewModel = new NoDeviceSettingsViewModel();
         DeviceListViewModel = new DeviceListViewModel();
     }
