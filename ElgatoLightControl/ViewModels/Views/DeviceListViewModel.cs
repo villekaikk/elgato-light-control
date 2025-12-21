@@ -14,10 +14,17 @@ public class DeviceListViewModel: ReactiveObject
 {
     private readonly IElgatoDeviceService _deviceService;
 
+    public delegate Task DeviceSelectedEventHandler(ElgatoDeviceListViewModel? device);
+    public event DeviceSelectedEventHandler DeviceSelectedEvent;
+    
     public ElgatoDeviceListViewModel? SelectedDevice
     {
         get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref field, value);
+            DeviceSelectedEvent?.Invoke(SelectedDevice);
+        }
     }
 
     public ObservableCollection<ElgatoDeviceListViewModel> Devices
