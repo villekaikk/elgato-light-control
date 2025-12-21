@@ -39,18 +39,18 @@ public class MainWindowViewModel : ReactiveObject
     
     private async Task DeviceSelectedCallback(ElgatoDeviceViewModel? device)
     {
-        SetDeviceSettingsViewModel(device.DeviceType);
+        SetDeviceSettingsViewModel(device?.DeviceType);
         await DeviceSettingsViewModel.DisplayDevice(device);
     }
 
-    private void SetDeviceSettingsViewModel(ElgatoDeviceType deviceType)
+    private void SetDeviceSettingsViewModel(ElgatoDeviceType? deviceType)
     {
         IDeviceSettingsViewModel? selectedViewModel = deviceType switch
         {
-            ElgatoDeviceType.KeylightAir => _serviceProvider.GetService<KeylightSettingsViewModel>(),
+            ElgatoDeviceType.KeylightAir => _serviceProvider.GetRequiredService<KeylightSettingsViewModel>(),
             _ => null
         };
 
-        DeviceSettingsViewModel = selectedViewModel ?? _serviceProvider.GetService<NoDeviceSettingsViewModel>()!;
+        DeviceSettingsViewModel = selectedViewModel ?? _serviceProvider.GetRequiredService<NoDeviceSettingsViewModel>();
     }
 }

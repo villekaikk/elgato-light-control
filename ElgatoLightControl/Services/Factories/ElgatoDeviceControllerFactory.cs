@@ -11,7 +11,7 @@ public class ElgatoDeviceControllerFactory(IServiceProvider serviceProvider) : I
     {
         IElgatoDeviceController? controller = deviceType switch
         {
-            ElgatoDeviceType.KeylightAir => serviceProvider.GetService<KeylightController>(),
+            ElgatoDeviceType.KeylightAir => serviceProvider.GetRequiredService<KeylightController>(),
             _ => null
         };
 
