@@ -4,9 +4,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
-using ElgatoLightControl.Services;
-using ElgatoLightControl.Services.Controllers;
-using ElgatoLightControl.Services.Factories;
 using ElgatoLightControl.ViewModels.Views;
 using ElgatoLightControl.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,16 +38,10 @@ public partial class App : Application
                 RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
 
                 services
-                    .AddSingleton<DeviceListViewModel>()
-                    .AddSingleton<NoDeviceSettingsViewModel>()
-                    .AddSingleton<KeylightSettingsViewModel>()
-                    .AddSingleton<MainWindowViewModel>()
-                    .AddSingleton<IElgatoDeviceService, ElgatoDeviceService>()
-                    .AddTransient<AccessoryInfoController>()
-                    .AddTransient<KeylightController>()
-                    .AddSingleton<IElgatoDeviceControllerFactory, ElgatoDeviceControllerFactory>()
+                    .AddServices()
+                    .AddVievModels()
                     .AddHttpClient();
-                
+
                 Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
             });
         
