@@ -39,7 +39,7 @@ public partial class App : Application
 
                 services
                     .AddServices()
-                    .AddVievModels()
+                    .AddViewModels()
                     .AddHttpClient();
 
                 Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());

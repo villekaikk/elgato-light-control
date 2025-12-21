@@ -15,7 +15,7 @@ public static class DependencyInjection
             .AddTransient<KeylightController>()
             .AddSingleton<IElgatoDeviceControllerFactory, ElgatoDeviceControllerFactory>();
 
-    public static IServiceCollection AddVievModels(this IServiceCollection services)
+    public static IServiceCollection AddViewModels(this IServiceCollection services)
         => services
             .AddSingleton<DeviceListViewModel>()
             .AddSingleton<NoDeviceSettingsViewModel>()
