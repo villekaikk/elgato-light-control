@@ -12,9 +12,9 @@ namespace ElgatoLightControl.Services;
 
 public class ElgatoDeviceService(IElgatoDeviceControllerFactory ctrlFactory, AccessoryInfoController aInfoCtrl) : IElgatoDeviceService
 {
-    public async Task<IEnumerable<IElgatoDevice>> ListDevices()
+    public async Task<IEnumerable<ElgatoDevice>> ListDevices()
     {
-        List<IElgatoDevice> devices = [];
+        List<ElgatoDevice> devices = [];
         try
         {
             var results = (await ZeroconfResolver.ResolveAsync("_elg._tcp.local.")).ToList();
@@ -40,7 +40,7 @@ public class ElgatoDeviceService(IElgatoDeviceControllerFactory ctrlFactory, Acc
         return devices;
     }
 
-    private IElgatoDevice ToDeviceInstance(ElgatoDeviceType deviceType, IZeroconfHost deviceConfig,
+    private ElgatoDevice ToDeviceInstance(ElgatoDeviceType deviceType, IZeroconfHost deviceConfig,
         ElgatoDeviceSettings settings, AccessoryInfo accessoryInfo)
     {
         switch (deviceType)
@@ -54,7 +54,7 @@ public class ElgatoDeviceService(IElgatoDeviceControllerFactory ctrlFactory, Acc
         
     }
 
-    public Task UpdateDevice(IElgatoDevice elgatoDevice)
+    public Task UpdateDevice(ElgatoDevice elgatoDevice)
     {
         throw new NotImplementedException();
     }

@@ -6,6 +6,6 @@ namespace ElgatoLightControl.Services;
 
 public interface IElgatoDeviceService
 {
-    public Task<IEnumerable<IElgatoDevice>> ListDevices();
-    public Task UpdateDevice(IElgatoDevice elgatoDevice);
+    public Task<IEnumerable<ElgatoDevice>> ListDevices();
+    public Task UpdateDevice(ElgatoDevice elgatoDevice);
 }

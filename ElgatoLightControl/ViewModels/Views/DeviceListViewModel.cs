@@ -15,7 +15,7 @@ public class DeviceListViewModel: ReactiveObject
     private readonly IElgatoDeviceService _deviceService;
 
     public delegate Task DeviceSelectedEventHandler(ElgatoDeviceViewModel? device);
-    public event DeviceSelectedEventHandler DeviceSelectedEvent;
+    public event DeviceSelectedEventHandler? DeviceSelectedEvent;
     
     public ElgatoDeviceViewModel? SelectedDevice
     {

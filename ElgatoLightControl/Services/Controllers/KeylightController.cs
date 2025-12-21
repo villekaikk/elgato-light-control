@@ -11,7 +11,7 @@ namespace ElgatoLightControl.Services.Controllers;
 public class KeylightController(IHttpClientFactory clientFactory) : IElgatoDeviceController
 {
     private static readonly string DeviceUrl = "http://{0}:9123/elgato/lights";
-    public Task<ElgatoDeviceSettings> UpdateDevice(IElgatoDevice device)
+    public Task<ElgatoDeviceSettings> UpdateDevice(ElgatoDevice device)
     {
         throw new NotImplementedException();
     }

@@ -6,7 +6,7 @@ public record Keylight(
     IZeroconfHost DeviceConfig,
     KeylightSettings KDeviceSettings,
     AccessoryInfo AccessoryInfo
-) : IElgatoDevice(DeviceConfig, KDeviceSettings, AccessoryInfo)
+) : ElgatoDevice(DeviceConfig, KDeviceSettings, AccessoryInfo)
 {
     public override ElgatoDeviceType DeviceType => ElgatoDeviceType.KeylightAir;
     public new KeylightSettings DeviceSettings => KDeviceSettings;

@@ -36,10 +36,6 @@ public class MainWindowViewModel : ReactiveObject
     
     private async Task DeviceSelectedCallback(ElgatoDeviceViewModel? device)
     {
-        await Task.Delay(1);
-        if (device is null)
-            return;
-        
-        DeviceSettingsViewModel.DisplayDevice(device);
+        await DeviceSettingsViewModel.DisplayDevice(device);
     }
 }

@@ -33,7 +33,7 @@ public class ElgatoDeviceViewModel : ReactiveObject
         DeviceType = deviceType;
     }
 
-    public ElgatoDeviceViewModel(IElgatoDevice device)
+    public ElgatoDeviceViewModel(ElgatoDevice device)
     {
         DisplayName = device.DeviceConfig.DisplayName;
         FirmwareVersion = device.AccessoryInfo.FirmwareVersion;
