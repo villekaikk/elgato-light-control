@@ -14,10 +14,10 @@ public class DeviceListViewModel: ReactiveObject
 {
     private readonly IElgatoDeviceService _deviceService;
 
-    public delegate Task DeviceSelectedEventHandler(ElgatoDeviceListViewModel? device);
+    public delegate Task DeviceSelectedEventHandler(ElgatoDeviceViewModel? device);
     public event DeviceSelectedEventHandler DeviceSelectedEvent;
     
-    public ElgatoDeviceListViewModel? SelectedDevice
+    public ElgatoDeviceViewModel? SelectedDevice
     {
         get;
         set
@@ -27,7 +27,7 @@ public class DeviceListViewModel: ReactiveObject
         }
     }
 
-    public ObservableCollection<ElgatoDeviceListViewModel> Devices
+    public ObservableCollection<ElgatoDeviceViewModel> Devices
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -39,8 +39,8 @@ public class DeviceListViewModel: ReactiveObject
         SelectedDevice = null;
         Devices =
         [
-            new ElgatoDeviceListViewModel("Test device 1", "1.0.0", KeylightSettings.None, ElgatoDeviceType.Unknown),
-            new ElgatoDeviceListViewModel("Test device 2", "1.0.1", KeylightSettings.None, ElgatoDeviceType.Unknown)
+            new ElgatoDeviceViewModel("Test device 1", "1.0.0", KeylightSettings.None, ElgatoDeviceType.Unknown),
+            new ElgatoDeviceViewModel("Test device 2", "1.0.1", KeylightSettings.None, ElgatoDeviceType.Unknown)
         ];
     }
 
@@ -62,7 +62,7 @@ public class DeviceListViewModel: ReactiveObject
         
         foreach (var device in elgatoDevices)
         {
-            Devices.Add(new ElgatoDeviceListViewModel(device));
+            Devices.Add(new ElgatoDeviceViewModel(device));
         }
     }
 }

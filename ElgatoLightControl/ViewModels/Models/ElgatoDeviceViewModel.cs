@@ -3,7 +3,7 @@ using ReactiveUI;
 
 namespace ElgatoLightControl.ViewModels.Models;
 
-public class ElgatoDeviceListViewModel : ReactiveObject
+public class ElgatoDeviceViewModel : ReactiveObject
 {
     public string DisplayName
     {
@@ -25,7 +25,7 @@ public class ElgatoDeviceListViewModel : ReactiveObject
 
     public ElgatoDeviceType DeviceType { get; set; }
 
-    public ElgatoDeviceListViewModel(string displayName, string firmwareVersion, ElgatoDeviceSettings settings, ElgatoDeviceType deviceType)
+    public ElgatoDeviceViewModel(string displayName, string firmwareVersion, ElgatoDeviceSettings settings, ElgatoDeviceType deviceType)
     {
         DisplayName = displayName;
         FirmwareVersion = firmwareVersion;
@@ -33,7 +33,7 @@ public class ElgatoDeviceListViewModel : ReactiveObject
         DeviceType = deviceType;
     }
 
-    public ElgatoDeviceListViewModel(IElgatoDevice device)
+    public ElgatoDeviceViewModel(IElgatoDevice device)
     {
         DisplayName = device.DeviceConfig.DisplayName;
         FirmwareVersion = device.AccessoryInfo.FirmwareVersion;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ElgatoLightControl.ViewModels.Models;
+using ElgatoLightControl.Views;
 using ReactiveUI;
 
 namespace ElgatoLightControl.ViewModels.Views;
@@ -9,11 +10,13 @@ public class MainWindowViewModel : ReactiveObject
 {
     public MainWindowViewModel()
     {
+        DeviceSettingsViewModel = new DeviceSettingsViewModel();
         DeviceListViewModel = new DeviceListViewModel();
     }
 
-    public MainWindowViewModel(DeviceListViewModel deviceListViewModel)
+    public MainWindowViewModel(DeviceListViewModel deviceListViewModel, DeviceSettingsViewModel deviceSettingsViewModel)
     {
+        DeviceSettingsViewModel = deviceSettingsViewModel;
         DeviceListViewModel = deviceListViewModel;
         DeviceListViewModel.DeviceSelectedEvent += DeviceSelectedCallback;
     }
@@ -25,12 +28,18 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
     
-    private async Task DeviceSelectedCallback(ElgatoDeviceListViewModel? device)
+    public DeviceSettingsViewModel DeviceSettingsViewModel
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+    
+    private async Task DeviceSelectedCallback(ElgatoDeviceViewModel? device)
     {
         await Task.Delay(1);
         if (device is null)
             return;
         
-        Console.WriteLine($"Device Selected Callback - {device.DisplayName}");
+        DeviceSettingsViewModel.DisplayDevice(device);
     }
 }
