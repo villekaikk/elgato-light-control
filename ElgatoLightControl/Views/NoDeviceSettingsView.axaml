@@ -10,6 +10,7 @@
         <vm:NoDeviceSettingsViewModel />
     </Design.DataContext>
     
-    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">No Device Selected</TextBlock>
-    
+    <Border BorderBrush="Black" BorderThickness="1">
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">No Device Selected</TextBlock>
+    </Border>
 </UserControl>

@@ -10,6 +10,7 @@
         <vm:KeylightSettingsViewModel />
     </Design.DataContext>
     
-    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Keylight Device Settings</TextBlock>
-    
+    <Border BorderBrush="Black" BorderThickness="1">
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Keylight Device Settings</TextBlock>
+    </Border>
 </UserControl>
