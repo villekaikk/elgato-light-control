@@ -1,26 +1,28 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ElgatoLightControl.Models;
 using ElgatoLightControl.ViewModels.Models;
-using ElgatoLightControl.Views;
+using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 
 namespace ElgatoLightControl.ViewModels.Views;
 
 public class MainWindowViewModel : ReactiveObject
 {
+    private IServiceProvider _serviceProvider;
     public MainWindowViewModel()
     {
-        DeviceSettingsViewModel = new DeviceSettingsViewModel();
+        DeviceSettingsViewModel = new NoDeviceSettingsViewModel();
         DeviceListViewModel = new DeviceListViewModel();
     }
 
-    public MainWindowViewModel(DeviceListViewModel deviceListViewModel, DeviceSettingsViewModel deviceSettingsViewModel)
+    public MainWindowViewModel(IServiceProvider serviceProvider, DeviceListViewModel deviceListViewModel)
     {
-        DeviceSettingsViewModel = deviceSettingsViewModel;
+        _serviceProvider = serviceProvider;
         DeviceListViewModel = deviceListViewModel;
         DeviceListViewModel.DeviceSelectedEvent += DeviceSelectedCallback;
+        DeviceSettingsViewModel = _serviceProvider.GetService<NoDeviceSettingsViewModel>()!;
     }
-
 
     public DeviceListViewModel DeviceListViewModel
     {
@@ -28,7 +30,7 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
     
-    public DeviceSettingsViewModel DeviceSettingsViewModel
+    public IDeviceSettingsViewModel DeviceSettingsViewModel
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -36,6 +38,18 @@ public class MainWindowViewModel : ReactiveObject
     
     private async Task DeviceSelectedCallback(ElgatoDeviceViewModel? device)
     {
+        SetDeviceSettingsViewModel(device.DeviceType);
         await DeviceSettingsViewModel.DisplayDevice(device);
+    }
+
+    private void SetDeviceSettingsViewModel(ElgatoDeviceType deviceType)
+    {
+        IDeviceSettingsViewModel? selectedViewModel = deviceType switch
+        {
+            ElgatoDeviceType.KeylightAir => _serviceProvider.GetService<KeylightSettingsViewModel>(),
+            _ => null
+        };
+
+        DeviceSettingsViewModel = selectedViewModel ?? _serviceProvider.GetService<NoDeviceSettingsViewModel>()!;
     }
 }

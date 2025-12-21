@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:ElgatoLightControl.ViewModels.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ElgatoLightControl.Views.DeviceSettingsView">
+             x:Class="ElgatoLightControl.Views.KeylightSettingsView">
              
     <Design.DataContext>
-        <vm:DeviceSettingsViewModel />
+        <vm:KeylightSettingsViewModel />
     </Design.DataContext>
     
-    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Device Settings</TextBlock>
+    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Keylight Device Settings</TextBlock>
     
 </UserControl>

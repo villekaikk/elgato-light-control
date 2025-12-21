@@ -42,7 +42,8 @@ public partial class App : Application
 
                 services
                     .AddSingleton<DeviceListViewModel>()
-                    .AddSingleton<DeviceSettingsViewModel>()
+                    .AddSingleton<NoDeviceSettingsViewModel>()
+                    .AddSingleton<KeylightSettingsViewModel>()
                     .AddSingleton<MainWindowViewModel>()
                     .AddSingleton<IElgatoDeviceService, ElgatoDeviceService>()
                     .AddTransient<AccessoryInfoController>()
