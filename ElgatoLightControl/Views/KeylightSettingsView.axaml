@@ -4,13 +4,37 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:ElgatoLightControl.ViewModels.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ElgatoLightControl.Views.KeylightSettingsView">
+             x:Class="ElgatoLightControl.Views.KeylightSettingsView"
+             x:DataType="vm:KeylightSettingsViewModel">
              
     <Design.DataContext>
         <vm:KeylightSettingsViewModel />
     </Design.DataContext>
     
     <Border BorderBrush="Black" BorderThickness="1">
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Keylight Device Settings</TextBlock>
+        <Grid RowDefinitions="Auto, *, *">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" >
+                <TextBlock Text="{Binding DeviceName}" FontSize="22" />
+                <TextBlock Text="{Binding FirmwareVersion}" FontSize="10" VerticalAlignment="Bottom" Margin="3,0,0,0"/>
+                
+            </StackPanel>
+            
+            <StackPanel Margin="120, 40, 120, 10" Grid.Row="1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Temperature "/>
+                    <TextBlock Text="{Binding #TempSlider.Value}"/>
+                    <TextBlock Text="K"/>
+                </StackPanel>
+                <Slider Maximum="{Binding MaxTemp}" Minimum="{Binding MinTemp}" x:Name="TempSlider" Value="{Binding Temperature}" TickFrequency="1" IsSnapToTickEnabled="True"/>
+            </StackPanel>
+            
+            <StackPanel Margin="120, 0, 120, 10" Grid.Row="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Brightness "/>
+                    <Label Content="{Binding #BrightSlider.Value}" HorizontalAlignment="Center" />
+                </StackPanel>
+                <Slider Minimum="0" Maximum="100" x:Name="BrightSlider" Value="{Binding Brightness}" TickFrequency="1" IsSnapToTickEnabled="True"/>
+            </StackPanel>
+        </Grid>
     </Border>
 </UserControl>
