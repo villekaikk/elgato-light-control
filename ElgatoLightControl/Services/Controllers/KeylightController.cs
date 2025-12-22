@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ElgatoLightControl.Models;
@@ -18,13 +19,16 @@ public class KeylightController(IHttpClientFactory clientFactory) : IElgatoDevic
         
         var url = string.Format(DeviceUrl, keylight.DeviceConfig.IpAddress);
         using var client = clientFactory.CreateClient();
+        var data = keylight.ToKeyLightRequestPayload();
+        var jsonData = JsonSerializer.Serialize(data);
+        var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
         using var request = new HttpRequestMessage(HttpMethod.Put, url);
+        request.Content = content;
         try
         {
             using var response = await client.SendAsync(request);
             if (!response.IsSuccessStatusCode)
             {
-                var content = await response.Content.ReadAsStringAsync();
                 Console.WriteLine($"Unable to update device settings {url}, {response.StatusCode}, {content}");
                 return;
             }
