@@ -19,7 +19,7 @@
                 
             </StackPanel>
             
-            <StackPanel Margin="120, 40, 120, 10" Grid.Row="1">
+            <StackPanel Margin="120, 40" Grid.Row="1">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="Temperature "/>
                     <TextBlock Text="{Binding #TempSlider.Value}"/>
@@ -28,10 +28,10 @@
                 <Slider Maximum="{Binding MaxTemp}" Minimum="{Binding MinTemp}" x:Name="TempSlider" Value="{Binding Temperature}" TickFrequency="1" IsSnapToTickEnabled="True"/>
             </StackPanel>
             
-            <StackPanel Margin="120, 0, 120, 10" Grid.Row="2">
+            <StackPanel Margin="120, 0" Grid.Row="2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="Brightness "/>
-                    <Label Content="{Binding #BrightSlider.Value}" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding #BrightSlider.Value}" HorizontalAlignment="Center" />
                 </StackPanel>
                 <Slider Minimum="0" Maximum="100" x:Name="BrightSlider" Value="{Binding Brightness}" TickFrequency="1" IsSnapToTickEnabled="True"/>
             </StackPanel>

@@ -2,16 +2,17 @@ using System;
 using System.Threading.Tasks;
 using ElgatoLightControl.Models.Keylight;
 using ElgatoLightControl.Services.Controllers;
+using ElgatoLightControl.Services.Factories;
 using ElgatoLightControl.ViewModels.Models;
 using ReactiveUI;
 
 namespace ElgatoLightControl.ViewModels.Views;
 
-public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewModel
+public class KeylightSettingsViewModel(KeylightController ctrl) : ReactiveObject, IDeviceSettingsViewModel
 {
-    // private readonly KeylightController _ctrl = ctrl;
+    private readonly KeylightController _ctrl = ctrl;
 
-    public KeylightSettingsViewModel()
+    public KeylightSettingsViewModel() : this(null!)
     {
         DeviceName = "Keylight Air";
         FirmwareVersion = "1.0.0";
@@ -29,22 +30,32 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         DeviceName = device.DisplayName;
         FirmwareVersion = device.FirmwareVersion;
         Brightness = settings.Brightness;
-        Temperature = settings.Temperature;
+        Temperature = BrightnessToKelvin(settings.Temperature);
         On =  settings.On;
         await Task.FromResult(0);
+    }
+    
+    private int BrightnessToKelvin(int x)
+    {
+        return (int)(Math.Round(7000.0 + (x - 143.0) * (-4100.0 / 201.0)));
+    }
+    
+    private int KelvinToBrightness(int x)
+    {
+        return (int)(143.0 + (x - 7000.0) * (201.0 / -4100.0));
     }
 
     public string DeviceName
     {
         get => field;
         set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-    
+    } = string.Empty;
+
     public string FirmwareVersion
     {
         get => field;
-        set =>  this.RaiseAndSetIfChanged(ref field, value);
-    }
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = string.Empty;
 
     public int Brightness
     {
