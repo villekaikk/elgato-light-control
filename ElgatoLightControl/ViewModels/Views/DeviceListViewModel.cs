@@ -35,12 +35,23 @@ public class DeviceListViewModel: ReactiveObject
 
     public DeviceListViewModel()
     {
+        // Design time Ctor
         _deviceService = null!;
         SelectedDevice = null;
         Devices =
         [
-            new ElgatoDeviceViewModel("Test device 1", "1.0.0", KeylightSettings.None, ElgatoDeviceType.Unknown),
-            new ElgatoDeviceViewModel("Test device 2", "1.0.1", KeylightSettings.None, ElgatoDeviceType.Unknown)
+            new ElgatoDeviceViewModel(
+                new ElgatoDeviceConfig("Test device 1", "1.0.0"),
+                new KeylightSettings(45, 200, true),
+                new AccessoryInfo("Test Keylight 1", "1.0.0", "1234abcd"),
+                ElgatoDeviceType.KeylightAir
+                ),
+            new ElgatoDeviceViewModel(
+                new ElgatoDeviceConfig("Test device 2", "1.0.1"),
+                new KeylightSettings(77, 150, false),
+                new AccessoryInfo("Test Keylight 2", "1.0.1", "1234abcd"),
+                ElgatoDeviceType.KeylightAir
+                )
         ];
     }
 

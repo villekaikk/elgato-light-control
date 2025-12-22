@@ -5,19 +5,19 @@ namespace ElgatoLightControl.ViewModels.Models;
 
 public class ElgatoDeviceViewModel : ReactiveObject
 {
-    public string DisplayName
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    public string FirmwareVersion
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
     public ElgatoDeviceSettings Settings
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public ElgatoDeviceConfig DeviceConfig
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
+
+    public AccessoryInfo AccessoryInfo
     {
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
@@ -25,19 +25,19 @@ public class ElgatoDeviceViewModel : ReactiveObject
 
     public ElgatoDeviceType DeviceType { get; set; }
 
-    public ElgatoDeviceViewModel(string displayName, string firmwareVersion, ElgatoDeviceSettings settings, ElgatoDeviceType deviceType)
+    public ElgatoDeviceViewModel(ElgatoDeviceConfig config, ElgatoDeviceSettings settings, AccessoryInfo accessoryInfo, ElgatoDeviceType deviceType)
     {
-        DisplayName = displayName;
-        FirmwareVersion = firmwareVersion;
+        DeviceConfig = config;
         Settings = settings;
         DeviceType = deviceType;
+        AccessoryInfo = accessoryInfo;
     }
 
     public ElgatoDeviceViewModel(ElgatoDevice device)
     {
-        DisplayName = device.DeviceConfig.DisplayName;
-        FirmwareVersion = device.AccessoryInfo.FirmwareVersion;
+        DeviceConfig = device.DeviceConfig;
         Settings = device.DeviceSettings;
+        AccessoryInfo = device.AccessoryInfo;
         DeviceType = device.DeviceType;
     }
 }

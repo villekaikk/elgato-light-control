@@ -3,7 +3,7 @@ using Zeroconf;
 namespace ElgatoLightControl.Models.Keylight;
 
 public record Keylight(
-    IZeroconfHost DeviceConfig,
+    ElgatoDeviceConfig DeviceConfig,
     KeylightSettings KDeviceSettings,
     AccessoryInfo AccessoryInfo
 ) : ElgatoDevice(DeviceConfig, KDeviceSettings, AccessoryInfo)

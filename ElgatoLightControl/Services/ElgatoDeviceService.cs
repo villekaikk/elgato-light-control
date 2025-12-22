@@ -40,22 +40,17 @@ public class ElgatoDeviceService(IElgatoDeviceControllerFactory ctrlFactory, Acc
         return devices;
     }
 
-    private ElgatoDevice ToDeviceInstance(ElgatoDeviceType deviceType, IZeroconfHost deviceConfig,
+    private static ElgatoDevice ToDeviceInstance(ElgatoDeviceType deviceType, IZeroconfHost deviceConfig,
         ElgatoDeviceSettings settings, AccessoryInfo accessoryInfo)
     {
         switch (deviceType)
         {
             case ElgatoDeviceType.KeylightAir:
-                KeylightSettings klSettings = (settings as KeylightSettings)!; 
-                return new Keylight(deviceConfig, klSettings, accessoryInfo);
+                var klSettings = (settings as KeylightSettings)!; 
+                return new Keylight(deviceConfig.ToDeviceConfig(), klSettings, accessoryInfo);
+            case ElgatoDeviceType.Unknown:
             default:
                 throw new NotImplementedException();
         }
-        
-    }
-
-    public Task UpdateDevice(ElgatoDevice elgatoDevice)
-    {
-        throw new NotImplementedException();
     }
 }
