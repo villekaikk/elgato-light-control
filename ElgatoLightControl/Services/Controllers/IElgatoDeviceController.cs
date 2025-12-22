@@ -5,6 +5,6 @@ namespace ElgatoLightControl.Services.Controllers;
 
 public interface IElgatoDeviceController
 {
-    public Task<ElgatoDeviceSettings> UpdateDevice(ElgatoDevice device);
+    public Task UpdateDevice(ElgatoDevice device);
     public Task<ElgatoDeviceSettings> GetDevice(string ipAddress);
 }

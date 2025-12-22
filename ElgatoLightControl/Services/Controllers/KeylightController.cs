@@ -11,9 +11,31 @@ namespace ElgatoLightControl.Services.Controllers;
 public class KeylightController(IHttpClientFactory clientFactory) : IElgatoDeviceController
 {
     private static readonly string DeviceUrl = "http://{0}:9123/elgato/lights";
-    public Task<ElgatoDeviceSettings> UpdateDevice(ElgatoDevice device)
+    public async Task UpdateDevice(ElgatoDevice device)
     {
-        throw new NotImplementedException();
+        if (device is not Keylight keylight)
+            return;
+        
+        var url = string.Format(DeviceUrl, keylight.DeviceConfig.IpAddress);
+        using var client = clientFactory.CreateClient();
+        using var request = new HttpRequestMessage(HttpMethod.Put, url);
+        try
+        {
+            using var response = await client.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Unable to update device settings {url}, {response.StatusCode}, {content}");
+                return;
+            }
+
+            Console.WriteLine("Updated device settings");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occured while updating device settings: Url: {url} - {ex}");
+            throw;
+        }
     }
 
     public async Task<ElgatoDeviceSettings> GetDevice(string ipAddress)
@@ -37,7 +59,7 @@ public class KeylightController(IHttpClientFactory clientFactory) : IElgatoDevic
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occured while executing the request: Url: {url} - {ex}");
+            Console.WriteLine($"An error occured while fetching device settings: Url: {url} - {ex}");
             throw;
         }
     }
