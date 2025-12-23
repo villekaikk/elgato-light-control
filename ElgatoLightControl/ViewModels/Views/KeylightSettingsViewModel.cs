@@ -13,6 +13,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
     private Keylight _device;
     private readonly DispatcherTimer _timer;
     private readonly KeylightController _ctrl;
+    private bool _deviceInit = false;
 
     public KeylightSettingsViewModel() : this(null!)
     {
@@ -37,16 +38,24 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         if (device is null)
             return;
 
-        _device = AsKeylight(device);
-        var settings = (KeylightSettings)device.Settings;
-        DeviceName = device.DeviceConfig.DisplayName;
-        FirmwareVersion = device.AccessoryInfo.FirmwareVersion;
-        Brightness = settings.Brightness;
-        Temperature = BrightnessToKelvin(settings.Temperature);
-        On =  settings.On;
+        _deviceInit = true;
+        try
+        {
+            _device = AsKeylight(device);
+            var settings = (KeylightSettings)device.Settings;
+            DeviceName = device.DeviceConfig.DisplayName;
+            FirmwareVersion = device.AccessoryInfo.FirmwareVersion;
+            Brightness = settings.Brightness;
+            Temperature = BrightnessToKelvin(settings.Temperature);
+            On = settings.On;
+        }
+        finally
+        {
+            _deviceInit = false;
+        }
     }
 
-    private Keylight AsKeylight(ElgatoDeviceViewModel device) 
+    private static Keylight AsKeylight(ElgatoDeviceViewModel device) 
         => new(device.DeviceConfig, (device.Settings as KeylightSettings)!, device.AccessoryInfo);
 
     private int BrightnessToKelvin(int x)
@@ -120,6 +129,10 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
     private void OnTimerTick(object? sender, EventArgs e)
     {
         _timer.Stop();
+        
+        if (_deviceInit)
+            return;
+        
         Task.Run(UpdateLightSettings);
     }
 
