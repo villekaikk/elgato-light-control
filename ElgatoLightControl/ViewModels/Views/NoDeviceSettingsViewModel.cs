@@ -6,8 +6,8 @@ namespace ElgatoLightControl.ViewModels.Views;
 
 public class NoDeviceSettingsViewModel : ReactiveObject, IDeviceSettingsViewModel
 {
-    public async Task DisplayDevice(ElgatoDeviceViewModel? device)
+    public void DisplayDevice(ElgatoDeviceViewModel? device)
     {
-        await Task.FromResult(0);
+        return;
     }
 }

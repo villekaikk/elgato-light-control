@@ -37,10 +37,10 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
     
-    private async Task DeviceSelectedCallback(ElgatoDeviceViewModel? device)
+    private void DeviceSelectedCallback(ElgatoDeviceViewModel? device)
     {
         SetDeviceSettingsViewModel(device?.DeviceType);
-        await DeviceSettingsViewModel.DisplayDevice(device);
+        DeviceSettingsViewModel.DisplayDevice(device);
     }
 
     private void SetDeviceSettingsViewModel(ElgatoDeviceType? deviceType)

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using ElgatoLightControl.Models.Keylight;
 using ElgatoLightControl.Services.Controllers;
 using ElgatoLightControl.ViewModels.Models;
@@ -7,9 +8,11 @@ using ReactiveUI;
 
 namespace ElgatoLightControl.ViewModels.Views;
 
-public class KeylightSettingsViewModel(KeylightController ctrl) : ReactiveObject, IDeviceSettingsViewModel
+public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewModel
 {
     private Keylight _device;
+    private readonly DispatcherTimer _timer;
+    private readonly KeylightController _ctrl;
 
     public KeylightSettingsViewModel() : this(null!)
     {
@@ -21,7 +24,15 @@ public class KeylightSettingsViewModel(KeylightController ctrl) : ReactiveObject
         On = true;
     }
 
-    public async Task DisplayDevice(ElgatoDeviceViewModel? device)
+    public KeylightSettingsViewModel(KeylightController ctrl)
+    {
+        _ctrl = ctrl;
+        _device = null!;
+        _timer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(300) };
+        _timer.Tick += OnTimerTick;
+    }
+
+    public void DisplayDevice(ElgatoDeviceViewModel? device)
     {
         if (device is null)
             return;
@@ -33,11 +44,10 @@ public class KeylightSettingsViewModel(KeylightController ctrl) : ReactiveObject
         Brightness = settings.Brightness;
         Temperature = BrightnessToKelvin(settings.Temperature);
         On =  settings.On;
-        await Task.FromResult(0);
     }
 
     private Keylight AsKeylight(ElgatoDeviceViewModel device) 
-        => new(device.DeviceConfig, (device.Settings as KeylightSettings)!, null!);
+        => new(device.DeviceConfig, (device.Settings as KeylightSettings)!, device.AccessoryInfo);
 
     private int BrightnessToKelvin(int x)
     {
@@ -53,7 +63,7 @@ public class KeylightSettingsViewModel(KeylightController ctrl) : ReactiveObject
     {
         var newSettings = new KeylightSettings(Brightness, Temperature, On);
         var device = _device with { KDeviceSettings = newSettings };
-        await ctrl.UpdateDevice(device);
+        await _ctrl.UpdateDevice(device);
     }
 
     public string DeviceName
@@ -62,7 +72,6 @@ public class KeylightSettingsViewModel(KeylightController ctrl) : ReactiveObject
         set
         {
             this.RaiseAndSetIfChanged(ref field, value);
-            Task.Run(UpdateLightSettings);
         }
     } = string.Empty;
 
@@ -72,7 +81,6 @@ public class KeylightSettingsViewModel(KeylightController ctrl) : ReactiveObject
         set
         {
             this.RaiseAndSetIfChanged(ref field, value);
-            Task.Run(UpdateLightSettings);
         }
     } = string.Empty;
 
@@ -82,7 +90,8 @@ public class KeylightSettingsViewModel(KeylightController ctrl) : ReactiveObject
         set
         {
             this.RaiseAndSetIfChanged(ref field, value);
-            Task.Run(UpdateLightSettings);
+            _timer.Stop();
+            _timer.Start();
         }
     } = 0;
 
@@ -92,7 +101,8 @@ public class KeylightSettingsViewModel(KeylightController ctrl) : ReactiveObject
         set
         {
             this.RaiseAndSetIfChanged(ref field, value);
-            Task.Run(UpdateLightSettings);
+            _timer.Stop();
+            _timer.Start();
         }
     } = 0;
 
@@ -102,9 +112,16 @@ public class KeylightSettingsViewModel(KeylightController ctrl) : ReactiveObject
         set
         {
             this.RaiseAndSetIfChanged(ref field, value);
+            _timer.Stop();
             Task.Run(UpdateLightSettings);
         }
     } = false;
+
+    private void OnTimerTick(object? sender, EventArgs e)
+    {
+        _timer.Stop();
+        Task.Run(UpdateLightSettings);
+    }
 
     public int MaxTemp => 7000;
     public int MinTemp => 2900;
