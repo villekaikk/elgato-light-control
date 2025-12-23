@@ -1,4 +1,5 @@
 using System;
+using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using ElgatoLightControl.Models.Keylight;
@@ -14,6 +15,8 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
     private readonly DispatcherTimer _timer;
     private readonly KeylightController _ctrl;
     private bool _deviceInit = false;
+    
+    public ReactiveCommand<Unit, Unit>? ToggleDevicePowerStateCommand { get; }
 
     public KeylightSettingsViewModel() : this(null!)
     {
@@ -22,7 +25,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         FirmwareVersion = "1.0.0";
         Brightness = 40;
         Temperature = 1000;
-        On = true;
+        Task.Run(() => ToggleDevicePowerState(true));
     }
 
     public KeylightSettingsViewModel(KeylightController ctrl)
@@ -31,9 +34,12 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         _device = null!;
         _timer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(300) };
         _timer.Tick += OnTimerTick;
+        
+        ToggleDevicePowerStateCommand = ReactiveCommand.CreateFromTask(() => ToggleDevicePowerState());
+        ToggleDevicePowerStateCommand.ThrownExceptions.Subscribe(ex => Console.WriteLine($"Exception thrown: {ex}"));
     }
 
-    public void DisplayDevice(ElgatoDeviceViewModel? device)
+    public async Task DisplayDevice(ElgatoDeviceViewModel? device)
     {
         if (device is null)
             return;
@@ -43,11 +49,12 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         {
             _device = AsKeylight(device);
             var settings = (KeylightSettings)device.Settings;
+            Console.WriteLine($"Settings in: {settings.Brightness}, {settings.Temperature}, {settings.On}");
             DeviceName = device.DeviceConfig.DisplayName;
             FirmwareVersion = device.AccessoryInfo.FirmwareVersion;
             Brightness = settings.Brightness;
             Temperature = BrightnessToKelvin(settings.Temperature);
-            On = settings.On;
+            await ToggleDevicePowerState(settings.On);
         }
         finally
         {
@@ -70,27 +77,30 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
 
     private async Task UpdateLightSettings()
     {
-        var newSettings = new KeylightSettings(Brightness, Temperature, On);
+        var newSettings = new KeylightSettings(Brightness, KelvinToBrightness(Temperature), _on);
+        Console.WriteLine($"Settings: {newSettings.Brightness}, {newSettings.Temperature},  {newSettings.On}");
         var device = _device with { KDeviceSettings = newSettings };
         await _ctrl.UpdateDevice(device);
+    }
+
+    private async Task ToggleDevicePowerState(bool? state = null)
+    {
+        _on = state ?? !_on;
+        DevicePowerState = _on ? "On" : "Off";
+        _timer.Stop();
+        await UpdateLightSettings();
     }
 
     public string DeviceName
     {
         get => field;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref field, value);
-        }
+        set => this.RaiseAndSetIfChanged(ref field, value);
     } = string.Empty;
 
     public string FirmwareVersion
     {
         get => field;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref field, value);
-        }
+        set => this.RaiseAndSetIfChanged(ref field, value);
     } = string.Empty;
 
     public int Brightness
@@ -115,7 +125,9 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         }
     } = 0;
 
-    public bool On
+    private bool _on;
+
+    public string DevicePowerState
     {
         get => field;
         set
@@ -124,7 +136,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
             _timer.Stop();
             Task.Run(UpdateLightSettings);
         }
-    } = false;
+    } = string.Empty;
 
     private void OnTimerTick(object? sender, EventArgs e)
     {

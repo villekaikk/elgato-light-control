@@ -7,5 +7,5 @@ namespace ElgatoLightControl.ViewModels.Views;
 
 public interface IDeviceSettingsViewModel
 {
-    public void DisplayDevice(ElgatoDeviceViewModel? device);
+    public Task DisplayDevice(ElgatoDeviceViewModel? device);
 }

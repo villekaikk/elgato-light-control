@@ -16,6 +16,7 @@
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" >
                 <TextBlock Text="{Binding DeviceName}" FontSize="22" />
                 <TextBlock Text="{Binding FirmwareVersion}" FontSize="10" VerticalAlignment="Bottom" Margin="3,0,0,0"/>
+                <Button Content="{Binding DevicePowerState}" Command="{Binding ToggleDevicePowerStateCommand}"/>
                 
             </StackPanel>
             
