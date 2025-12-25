@@ -13,6 +13,7 @@ namespace ElgatoLightControl.ViewModels.Views;
 public class DeviceListViewModel: ReactiveObject
 {
     private readonly IElgatoDeviceService _deviceService;
+    private bool _initialSetupDone = false;
 
     public delegate void DeviceSelectedEventHandler(ElgatoDeviceViewModel? device);
     public event DeviceSelectedEventHandler? DeviceSelectedEvent;
@@ -74,6 +75,12 @@ public class DeviceListViewModel: ReactiveObject
         foreach (var device in elgatoDevices)
         {
             Devices.Add(new ElgatoDeviceViewModel(device));
+        }
+
+        if (!_initialSetupDone && Devices.Any())
+        {
+            SelectedDevice = Devices.First();
+            _initialSetupDone = true;
         }
     }
 }
