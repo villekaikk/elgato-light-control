@@ -28,9 +28,21 @@ public class DeviceListViewModel: ReactiveObject
         }
     }
 
+    public string StatusText
+    {
+        get => field;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = "Searching devices";
+
+    public bool Loading
+    {
+        get => field;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = false;
+
     public ObservableCollection<ElgatoDeviceViewModel> Devices
     {
-        get;
+        get => field;
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
@@ -39,6 +51,8 @@ public class DeviceListViewModel: ReactiveObject
         // Design time Ctor
         _deviceService = null!;
         SelectedDevice = null;
+        // StatusText = string.Empty;
+        Loading = true;
         Devices =
         [
             new ElgatoDeviceViewModel(
@@ -67,20 +81,30 @@ public class DeviceListViewModel: ReactiveObject
     
     private async Task LoadDevicesAsync()
     {
-        var devices = await _deviceService.ListDevices();
-        var elgatoDevices = devices.ToList();
-        if (!elgatoDevices.Any())
-            Console.WriteLine("No devices found");
-        
-        foreach (var device in elgatoDevices)
+        try
         {
-            Devices.Add(new ElgatoDeviceViewModel(device));
-        }
+            StatusText = "Searching devices...";
+            Loading = true;
+            var devices = await _deviceService.ListDevices();
+            var elgatoDevices = devices.ToList();
+            if (!elgatoDevices.Any())
+                Console.WriteLine("No devices found");
 
-        if (!_initialSetupDone && Devices.Any())
+            foreach (var device in elgatoDevices)
+            {
+                Devices.Add(new ElgatoDeviceViewModel(device));
+            }
+        }
+        finally
         {
-            SelectedDevice = Devices.First();
-            _initialSetupDone = true;
+            StatusText = string.Empty;
+            Loading = false;
+            
+            if (!_initialSetupDone && Devices.Any())
+            {
+                SelectedDevice = Devices.First();
+                _initialSetupDone = true;
+            }
         }
     }
 }
