@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -56,9 +57,12 @@ public class KeylightController(IHttpClientFactory clientFactory) : IElgatoDevic
                 Console.WriteLine($"Unable to get device settings {url}, {response.StatusCode}, {content}");
                 return KeylightSettings.None;
             }
+
+            var stringContent = await response.Content.ReadAsStringAsync();
+            var payload = JsonSerializer.Deserialize<KeylightRequestPayload>(stringContent);
+            var settings = payload?.Lights.First().ToKeylightSettings();
             
-            var dto = JsonSerializer.Deserialize<KeylightSettingsDto>(await response.Content.ReadAsStringAsync());
-            var settings = dto?.ToKeylightSettings(); 
+            Console.WriteLine($"Hombre settings: {settings?.Brightness}, {settings?.Temperature}, {settings?.On}");
             return settings ??  KeylightSettings.None;
         }
         catch (Exception ex)

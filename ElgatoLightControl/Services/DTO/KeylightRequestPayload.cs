@@ -7,16 +7,18 @@ namespace ElgatoLightControl.Services.DTO;
 public class KeylightRequestPayload
 {
     [JsonPropertyName("numberOfLights")]
-    public int NumberOfLights => Lights.Count;
+    public int NumberOfLights { get; init; }
 
-    public List<KeylightSettingsDto> Lights { get; set; } = [];
+    [JsonPropertyName("lights")]
+    public List<KeylightSettingsDto> Lights { get; init; }
 }
 
 public static class KeyLightRequestPayloadExtensions
 {
     public static KeylightRequestPayload ToKeyLightRequestPayload(this Keylight keylight)
-        => new KeylightRequestPayload()
+        => new()
         {
+            NumberOfLights = 1,
             Lights = [
                 new KeylightSettingsDto()
                 {
