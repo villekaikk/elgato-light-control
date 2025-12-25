@@ -10,7 +10,7 @@ namespace ElgatoLightControl.Services.Controllers;
 public class AccessoryInfoController(IHttpClientFactory clientFactory)
 {
     private static readonly string DeviceUrl = "http://{0}:9123/elgato/accessory-info";
-    public async Task<AccessoryInfo?> GetInfo(string ipAddress)
+    public async Task<AccessoryInfo> GetInfo(string ipAddress)
     {
         var url = string.Format(DeviceUrl, ipAddress);
         using var client = clientFactory.CreateClient();
@@ -23,12 +23,13 @@ public class AccessoryInfoController(IHttpClientFactory clientFactory)
             {
                 var content = await response.Content.ReadAsStringAsync();
                 Console.WriteLine($"Unable to get accessory info {url}, {response.StatusCode}, {content}");
-                return null;
+                throw new Exception("Unable to get accessory info");
             }
 
             var stringContent = await response.Content.ReadAsStringAsync();
             var dto = JsonSerializer.Deserialize<AccessoryInfoDto>(stringContent);
-            return dto?.ToAccessoryInfo();
+            var accInfo = dto?.ToAccessoryInfo();
+            return accInfo ?? throw new  Exception("Unable to convert to accessory info");
         }
         catch (Exception ex)
         {
