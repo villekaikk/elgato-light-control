@@ -24,7 +24,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         DeviceName = "Keylight Air";
         FirmwareVersion = "1.0.0";
         Brightness = 40;
-        Temperature = 1000;
+        Temperature = 200;
         Task.Run(() => ToggleDevicePowerState(true));
     }
 
@@ -52,7 +52,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
             DeviceName = device.DeviceConfig.DisplayName;
             FirmwareVersion = device.AccessoryInfo.FirmwareVersion;
             Brightness = settings.Brightness;
-            Temperature = BrightnessToKelvin(settings.Temperature);
+            Temperature = settings.Temperature;
             await ToggleDevicePowerState(settings.On);
         }
         finally
@@ -76,7 +76,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
 
     private async Task UpdateLightSettings()
     {
-        var newSettings = new KeylightSettings(Brightness, KelvinToBrightness(Temperature), _on);
+        var newSettings = new KeylightSettings(Brightness, Temperature, _on);
         var device = _device with { KDeviceSettings = newSettings };
         await _ctrl.UpdateDevice(device);
     }
@@ -118,10 +118,24 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         set
         {
             this.RaiseAndSetIfChanged(ref field, value);
+            TempValueKelvin = value;
             _timer.Stop();
             _timer.Start();
         }
     } = 0;
+    
+    public int MaxTemp => 344;
+    public int MinTemp => 134;
+
+    public int TempValueKelvin
+    {
+        get => field;
+        set
+        {
+            value = BrightnessToKelvin(value);
+            this.RaiseAndSetIfChanged(ref field, value);
+        }
+    } = 134;
 
     private bool _on;
 
@@ -145,7 +159,4 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         
         Task.Run(UpdateLightSettings);
     }
-
-    public int MaxTemp => 7000;
-    public int MinTemp => 2900;
 }

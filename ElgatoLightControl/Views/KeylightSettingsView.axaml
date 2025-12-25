@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:ElgatoLightControl.ViewModels.Views"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="400"
              x:Class="ElgatoLightControl.Views.KeylightSettingsView"
              x:DataType="vm:KeylightSettingsViewModel">
              
@@ -12,7 +12,7 @@
     </Design.DataContext>
     
     <Border BorderBrush="Black" BorderThickness="1">
-        <Grid RowDefinitions="Auto, *, *">
+        <Grid RowDefinitions="Auto, *, *" Margin="10">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" >
                 <TextBlock Text="{Binding DeviceName}" FontSize="22" />
                 <TextBlock Text="{Binding FirmwareVersion}" FontSize="10" VerticalAlignment="Bottom" Margin="3,0,0,0"/>
@@ -23,7 +23,7 @@
             <StackPanel Margin="120, 40" Grid.Row="1">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="Temperature "/>
-                    <TextBlock Text="{Binding #TempSlider.Value}"/>
+                    <TextBlock Text="{Binding TempValueKelvin}"/>
                     <TextBlock Text="K"/>
                 </StackPanel>
                 <Slider Maximum="{Binding MaxTemp}" Minimum="{Binding MinTemp}" x:Name="TempSlider" Value="{Binding Temperature}" TickFrequency="1" IsSnapToTickEnabled="True"/>
