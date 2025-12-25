@@ -12,11 +12,24 @@
     </Design.DataContext>
     
     <Border BorderBrush="Black" BorderThickness="1">
-        <Grid RowDefinitions="Auto, *, *" Margin="10">
+        <Grid RowDefinitions="*, *, *, *, *" Margin="10">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" >
-                <TextBlock Text="{Binding DeviceName}" FontSize="22" />
-                <TextBlock Text="{Binding FirmwareVersion}" FontSize="10" VerticalAlignment="Bottom" Margin="3,0,0,0"/>
-                <Button Content="{Binding DevicePowerState}" Command="{Binding ToggleDevicePowerStateCommand}"/>
+                <TextBlock Text="{Binding DeviceName}" FontSize="24" />
+                <TextBlock Text="{Binding FirmwareVersion}" FontSize="10" VerticalAlignment="Bottom" Margin="5,0,0,0"/>
+                <Button Content="{Binding DevicePowerState}" Margin="10, 0, 0, 0" Command="{Binding ToggleDevicePowerStateCommand}" Classes.On="{Binding On}" Classes.Off="{Binding !On}">
+                    <Button.Styles>
+                        <Style Selector="Button.On">
+                            <Setter Property="Foreground" Value="{StaticResource Background}" />
+                            <Setter Property="Background" Value="{StaticResource Accent}"/>
+                        </Style>
+                
+                        <Style Selector="Button.Off">
+                            <Setter Property="Foreground" Value="{StaticResource Accent}" />
+                            <Setter Property="Background" Value="{StaticResource Background}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Accent}"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
                 
             </StackPanel>
             

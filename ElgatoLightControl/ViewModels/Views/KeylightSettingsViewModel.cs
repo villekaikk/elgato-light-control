@@ -25,6 +25,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         FirmwareVersion = "1.0.0";
         Brightness = 40;
         Temperature = 200;
+        DevicePowerState = "On";
         Task.Run(() => ToggleDevicePowerState(true));
     }
 
@@ -76,15 +77,15 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
 
     private async Task UpdateLightSettings()
     {
-        var newSettings = new KeylightSettings(Brightness, Temperature, _on);
+        var newSettings = new KeylightSettings(Brightness, Temperature, On);
         var device = _device with { KDeviceSettings = newSettings };
         await _ctrl.UpdateDevice(device);
     }
 
     private async Task ToggleDevicePowerState(bool? state = null)
     {
-        _on = state ?? !_on;
-        DevicePowerState = _on ? "On" : "Off";
+        On = state ?? !On;
+        DevicePowerState = On ? "On" : "Off";
         _timer.Stop();
         await UpdateLightSettings();
     }
@@ -137,7 +138,11 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         }
     } = 134;
 
-    private bool _on;
+    public bool On
+    {
+        get => field;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
 
     public string DevicePowerState
     {
