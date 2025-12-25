@@ -31,10 +31,7 @@ public class KeylightController(IHttpClientFactory clientFactory) : IElgatoDevic
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine($"Unable to update device settings {url}, {response.StatusCode}, {content}");
-                return;
             }
-
-            Console.WriteLine("Updated device settings");
         }
         catch (Exception ex)
         {
@@ -62,7 +59,6 @@ public class KeylightController(IHttpClientFactory clientFactory) : IElgatoDevic
             var payload = JsonSerializer.Deserialize<KeylightRequestPayload>(stringContent);
             var settings = payload?.Lights.First().ToKeylightSettings();
             
-            Console.WriteLine($"Hombre settings: {settings?.Brightness}, {settings?.Temperature}, {settings?.On}");
             return settings ??  KeylightSettings.None;
         }
         catch (Exception ex)

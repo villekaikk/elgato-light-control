@@ -49,7 +49,6 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         {
             _device = AsKeylight(device);
             var settings = (KeylightSettings)device.Settings;
-            Console.WriteLine($"Settings in: {settings.Brightness}, {settings.Temperature}, {settings.On}");
             DeviceName = device.DeviceConfig.DisplayName;
             FirmwareVersion = device.AccessoryInfo.FirmwareVersion;
             Brightness = settings.Brightness;
@@ -78,7 +77,6 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
     private async Task UpdateLightSettings()
     {
         var newSettings = new KeylightSettings(Brightness, KelvinToBrightness(Temperature), _on);
-        Console.WriteLine($"Settings: {newSettings.Brightness}, {newSettings.Temperature},  {newSettings.On}");
         var device = _device with { KDeviceSettings = newSettings };
         await _ctrl.UpdateDevice(device);
     }
