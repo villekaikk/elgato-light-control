@@ -5,6 +5,7 @@ using Avalonia.Threading;
 using ElgatoLightControl.Models.Keylight;
 using ElgatoLightControl.Services.Controllers;
 using ElgatoLightControl.ViewModels.Models;
+using ElgatoLightControl.ViewModels.Utils;
 using ReactiveUI;
 
 namespace ElgatoLightControl.ViewModels.Views;
@@ -65,16 +66,6 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
     private static Keylight AsKeylight(ElgatoDeviceViewModel device) 
         => new(device.DeviceConfig, (device.Settings as KeylightSettings)!, device.AccessoryInfo);
 
-    private int BrightnessToKelvin(int x)
-    {
-        return (int)(Math.Round(7000.0 + (x - 143.0) * (-4100.0 / 201.0)));
-    }
-    
-    private int KelvinToBrightness(int x)
-    {
-        return (int)(143.0 + (x - 7000.0) * (201.0 / -4100.0));
-    }
-
     private async Task UpdateLightSettings()
     {
         var newSettings = new KeylightSettings(Brightness, Temperature, On);
@@ -92,19 +83,19 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
 
     public string DeviceName
     {
-        get => field;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
     } = string.Empty;
 
     public string FirmwareVersion
     {
-        get => field;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
     } = string.Empty;
 
     public int Brightness
     {
-        get => field;
+        get;
         set
         {
             this.RaiseAndSetIfChanged(ref field, value);
@@ -115,7 +106,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
 
     public int Temperature
     {
-        get => field;
+        get;
         set
         {
             this.RaiseAndSetIfChanged(ref field, value);
@@ -130,23 +121,23 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
 
     public int TempValueKelvin
     {
-        get => field;
-        set
+        get;
+        private set
         {
-            value = BrightnessToKelvin(value);
+            value = value.BrightnessToKelvin();
             this.RaiseAndSetIfChanged(ref field, value);
         }
     } = 134;
 
     public bool On
     {
-        get => field;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public string DevicePowerState
     {
-        get => field;
+        get;
         set
         {
             this.RaiseAndSetIfChanged(ref field, value);

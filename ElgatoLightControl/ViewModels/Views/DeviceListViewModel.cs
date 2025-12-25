@@ -21,7 +21,7 @@ public class DeviceListViewModel: ReactiveObject
     public ElgatoDeviceViewModel? SelectedDevice
     {
         get;
-        set
+        private set
         {
             this.RaiseAndSetIfChanged(ref field, value);
             DeviceSelectedEvent?.Invoke(SelectedDevice);
@@ -30,20 +30,20 @@ public class DeviceListViewModel: ReactiveObject
 
     public string StatusText
     {
-        get => field;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    } = "Searching devices";
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
+    } = string.Empty;
 
     public bool Loading
     {
-        get => field;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
     } = false;
 
     public ObservableCollection<ElgatoDeviceViewModel> Devices
     {
-        get => field;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public DeviceListViewModel()
@@ -51,7 +51,7 @@ public class DeviceListViewModel: ReactiveObject
         // Design time Ctor
         _deviceService = null!;
         SelectedDevice = null;
-        // StatusText = string.Empty;
+        StatusText = string.Empty;
         Loading = true;
         Devices =
         [

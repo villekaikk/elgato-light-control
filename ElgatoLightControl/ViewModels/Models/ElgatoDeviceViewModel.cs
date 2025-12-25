@@ -8,19 +8,19 @@ public class ElgatoDeviceViewModel : ReactiveObject
     public ElgatoDeviceSettings Settings
     {
         get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        private set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public ElgatoDeviceConfig DeviceConfig
     {
         get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        private set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public AccessoryInfo AccessoryInfo
     {
         get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        private set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public ElgatoDeviceType DeviceType { get; set; }

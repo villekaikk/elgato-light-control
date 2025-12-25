@@ -28,13 +28,13 @@ public class MainWindowViewModel : ReactiveObject
     public DeviceListViewModel DeviceListViewModel
     {
         get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        private init => this.RaiseAndSetIfChanged(ref field, value);
     }
     
     public IDeviceSettingsViewModel DeviceSettingsViewModel
     {
         get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
+        private set => this.RaiseAndSetIfChanged(ref field, value);
     }
     
     private void DeviceSelectedCallback(ElgatoDeviceViewModel? device)
