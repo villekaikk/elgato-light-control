@@ -11,6 +11,6 @@
     </Design.DataContext>
     
     <Border BorderBrush="Black" BorderThickness="1">
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">No Device Selected</TextBlock>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="22" >No Device Selected</TextBlock>
     </Border>
 </UserControl>
