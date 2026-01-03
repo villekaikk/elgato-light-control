@@ -12,6 +12,7 @@
         <Authors>ElgatoLightControl</Authors>
         <Company>ElgatoLightControl</Company>
         <Product>ElgatoLightControl</Product>
+        <ApplicationIcon>Assets\elgato-light-control.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
