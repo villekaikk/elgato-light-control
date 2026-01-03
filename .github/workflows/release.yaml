@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
         
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
@@ -30,7 +30,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ElgatoLightControl-Linux
+        name: ElgatoLightControl_${{github.ref_name}}-linux
         path: |
           elgato-light-control_${{github.ref_name}}.tar.gz
 
@@ -38,7 +38,7 @@ jobs:
     runs-on: windows-latest
     steps: 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -59,6 +59,34 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ElgatoLightControl-Windows
+          name: ElgatoLightControl_${{github.ref_name}}-win
           path: |
+            elgato-light-control_${{github.ref_name}}.zip
+
+  release:
+    runs-on: linux-latest
+    needs: [build-linux, build-windows]
+    steps:
+      - name: Pull artifact (Linux)
+        uses: actions/download-artifact@v4
+        with:
+          name: ElgatoLightControl_${{github.ref_name}}-linux
+
+      - name: Pull artifact (Windows)
+        uses: actions/download-artifact@v4
+        with:
+          name: ElgatoLightControl_${{github.ref_name}}-win
+
+      - name: Debug print
+        run: pwd && ls
+        
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release v${{github.ref_name}}
+          tag_name: ${{github.ref_name}}
+          fail_on_unmatched_files: true
+          make_latest: true
+          files: |
+            elgato-light-control_${{github.ref_name}}.tar.gz
             elgato-light-control_${{github.ref_name}}.zip
