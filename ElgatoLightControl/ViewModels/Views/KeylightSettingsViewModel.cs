@@ -17,7 +17,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
     private readonly KeylightController _ctrl;
     private bool _deviceInit = false;
     
-    public ReactiveCommand<Unit, Unit>? ToggleDevicePowerStateCommand { get; }
+    public ReactiveCommand<Unit, Unit> ToggleDevicePowerStateCommand { get; }
 
     public KeylightSettingsViewModel() : this(null!)
     {
@@ -41,7 +41,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         ToggleDevicePowerStateCommand.ThrownExceptions.Subscribe(ex => Console.WriteLine($"Exception thrown: {ex}"));
     }
 
-    public async Task DisplayDevice(ElgatoDeviceViewModel? device)
+    public async Task DisplayDevice(ElgatoDeviceViewModel device)
     {
         if (device is null)
             return;
@@ -146,7 +146,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         }
     } = string.Empty;
 
-    private void OnTimerTick(object? sender, EventArgs e)
+    private void OnTimerTick(object sender, EventArgs e)
     {
         _timer.Stop();
         

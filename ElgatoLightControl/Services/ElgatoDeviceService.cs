@@ -36,7 +36,6 @@ public class ElgatoDeviceService(IElgatoDeviceControllerFactory ctrlFactory, Acc
             Console.WriteLine(ex.Message);
         }
 
-        Console.WriteLine($"Found {devices.Count()} devices");
         return devices;
     }
 

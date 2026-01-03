@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using ElgatoLightControl.Models;
 using ElgatoLightControl.Models.Keylight;
@@ -15,10 +16,10 @@ public class DeviceListViewModel: ReactiveObject
     private readonly IElgatoDeviceService _deviceService;
     private bool _initialSetupDone = false;
 
-    public delegate void DeviceSelectedEventHandler(ElgatoDeviceViewModel? device);
-    public event DeviceSelectedEventHandler? DeviceSelectedEvent;
+    public delegate void DeviceSelectedEventHandler(ElgatoDeviceViewModel device);
+    public event DeviceSelectedEventHandler DeviceSelectedEvent;
     
-    public ElgatoDeviceViewModel? SelectedDevice
+    public ElgatoDeviceViewModel SelectedDevice
     {
         get;
         private set
@@ -68,6 +69,7 @@ public class DeviceListViewModel: ReactiveObject
                 ElgatoDeviceType.KeylightAir
                 )
         ];
+        SelectedDevice = Devices.First();
     }
 
     public DeviceListViewModel(IElgatoDeviceService deviceService)
@@ -75,22 +77,26 @@ public class DeviceListViewModel: ReactiveObject
         _deviceService = deviceService;
         SelectedDevice = null;
         Devices = [];
-        _ = Task.Run(LoadDevicesAsync);
         
+        Task.Run(LoadDevicesAsync);
+        Observable
+            .Interval(TimeSpan.FromSeconds(5))
+            .Subscribe(_ => Task.Run(LoadDevicesAsync));
     }
     
     private async Task LoadDevicesAsync()
     {
         try
         {
-            StatusText = "Searching devices...";
-            Loading = true;
+            if (!_initialSetupDone)
+            {
+                StatusText = "Searching devices...";
+                Loading = true;
+            }
             var devices = await _deviceService.ListDevices();
             var elgatoDevices = devices.ToList();
-            if (!elgatoDevices.Any())
-                Console.WriteLine("No devices found");
 
-            foreach (var device in elgatoDevices)
+            foreach (var device in elgatoDevices.Where(device => Devices.All(d => d.DeviceConfig.IpAddress != device.DeviceConfig.IpAddress)))
             {
                 Devices.Add(new ElgatoDeviceViewModel(device));
             }

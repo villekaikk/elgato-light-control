@@ -5,7 +5,7 @@ namespace ElgatoLightControl;
 
 public class ViewLocator : IDataTemplate
 {
-    public Control? Build(object? data)
+    public Control Build(object data)
     {
         if (data is null)
             return null;
@@ -38,7 +38,7 @@ public class ViewLocator : IDataTemplate
         };
     }
 
-    public bool Match(object? data)
+    public bool Match(object data)
     {
         return data?.GetType().Name.EndsWith("ViewModel") ?? false;
     }
