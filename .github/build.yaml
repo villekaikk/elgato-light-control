@@ -1,0 +1,63 @@
+name: Build
+
+on:
+  push:
+    tags: 
+      - '*'
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+        
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Restore
+      run: dotnet restore
+
+    - name: Publish
+      run: |
+        dotnet publish -o ElgatoLightControl-${{github.ref_name}} -p:Configuration=Release ElgatoLightControl
+
+    - name: Zip
+      run: tar -czf elgato-light-control_${{github.ref_name}}.tar.gz ElgatoLightControl-${{github.ref_name}}
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ElgatoLightControl-Linux
+        path: |
+          elgato-light-control_${{github.ref_name}}.tar.gz
+
+  build-windows:
+    runs-on: windows-latest
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Publish
+        run: |
+          dotnet publish -o ElgatoLightControl-${{github.ref_name}} -p:Configuration=Release ElgatoLightControl
+
+      - name: Zip
+        run: |
+          Compress-Archive ./ElgatoLightControl-${{github.ref_name}} elgato-light-control_${{github.ref_name}}.zip
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ElgatoLightControl-Windows
+          path: |
+            elgato-light-control_${{github.ref_name}}.zip
