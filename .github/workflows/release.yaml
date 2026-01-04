@@ -32,7 +32,7 @@ jobs:
       with:
         name: ElgatoLightControl_${{ github.ref_name }}-linux
         path: |
-          elgato-light-control_${ {github.ref_name }}.tar.gz
+          elgato-light-control_${{ github.ref_name }}.tar.gz
 
   build-windows:
     runs-on: windows-latest
