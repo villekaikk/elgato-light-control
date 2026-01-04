@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using ElgatoLightControl.Models;
 using ElgatoLightControl.ViewModels.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +21,7 @@ public class MainWindowViewModel : ReactiveObject
         _serviceProvider = serviceProvider;
         DeviceListViewModel = deviceListViewModel;
         DeviceListViewModel.DeviceSelectedEvent += DeviceSelectedCallback;
-        DeviceSettingsViewModel = _serviceProvider.GetService<NoDeviceSettingsViewModel>()!;
+        DeviceSettingsViewModel = _serviceProvider.GetRequiredService<NoDeviceSettingsViewModel>();
     }
 
     public DeviceListViewModel DeviceListViewModel
