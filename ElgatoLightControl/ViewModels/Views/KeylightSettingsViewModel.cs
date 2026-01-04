@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -12,10 +13,10 @@ namespace ElgatoLightControl.ViewModels.Views;
 
 public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewModel
 {
-    private Keylight _device;
+    private Keylight? _device;
     private readonly DispatcherTimer _timer;
     private readonly KeylightController _ctrl;
-    private bool _deviceInit = false;
+    private bool _deviceInit;
     
     public ReactiveCommand<Unit, Unit> ToggleDevicePowerStateCommand { get; }
 
@@ -43,9 +44,6 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
 
     public async Task DisplayDevice(ElgatoDeviceViewModel device)
     {
-        if (device is null)
-            return;
-
         _deviceInit = true;
         try
         {
@@ -68,6 +66,8 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
 
     private async Task UpdateLightSettings()
     {
+        if (_device is null) return;
+        
         var newSettings = new KeylightSettings(Brightness, Temperature, On);
         var device = _device with { KDeviceSettings = newSettings };
         await _ctrl.UpdateDevice(device);
@@ -146,7 +146,7 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         }
     } = string.Empty;
 
-    private void OnTimerTick(object sender, EventArgs e)
+    private void OnTimerTick(object? sender, EventArgs e)
     {
         _timer.Stop();
         
