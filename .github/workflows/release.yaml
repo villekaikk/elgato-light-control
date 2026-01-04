@@ -17,15 +17,12 @@ jobs:
       with:
         dotnet-version: 10.0.x
 
-    - name: Restore
-      run: dotnet restore
-
     - name: Publish
       run: |
         dotnet publish -o ElgatoLightControl-${{ github.ref_name }} -p:Configuration=Release ElgatoLightControl
 
     - name: Zip
-      run: tar -czf --ex elgato-light-control_${{ github.ref_name }}.tar.gz ElgatoLightControl-${{ github.ref_name }}
+      run: tar -czf --exclude *.pdb elgato-light-control_${{ github.ref_name }}.tar.gz ElgatoLightControl-${{ github.ref_name }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -45,16 +42,14 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Restore
-        run: dotnet restore
-
       - name: Publish
         run: |
           dotnet publish -o ElgatoLightControl-${{ github.ref_name }} -p:Configuration=Release ElgatoLightControl
 
       - name: Zip
         run: |
-          Compress-Archive -Exclude "*.pdb" ./ElgatoLightControl-${{ github.ref_name }} elgato-light-control_${{ github.ref_name }}.zip
+          $ExcludedItems = @('*.pdb')
+          Compress-Archive -Path ElgatoLightControl-${{ github.ref_name }} -Exclude $ExcludedItems -DestinationPath elgato-light-control_${{ github.ref_name }}.zip
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -76,9 +71,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ElgatoLightControl_${{ github.ref_name }}-win
-
-      - name: Debug print
-        run: pwd && ls
         
       - name: Publish release
         uses: softprops/action-gh-release@v2
