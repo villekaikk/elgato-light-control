@@ -88,7 +88,7 @@ jobs:
           fail_on_unmatched_files: true
           make_latest: true
           target_commitish: main
-          token: ${{ secrets.RELEASE_TOKEN} }
+          token: ${{ secrets.RELEASE_TOKEN }}
           files: |
             elgato-light-control_${{ github.ref_name }}.tar.gz
             elgato-light-control_${{ github.ref_name }}.zip
