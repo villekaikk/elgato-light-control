@@ -19,7 +19,7 @@ jobs:
 
     - name: Publish
       run: |
-        dotnet publish -o ElgatoLightControl-${{ github.ref_name }} -p:Configuration=Release ElgatoLightControl
+        dotnet publish -o ElgatoLightControl-${{ github.ref_name }} -c Release ElgatoLightControl
 
     - name: Zip
       run: tar --exclude '*.pdb' -czf elgato-light-control_${{ github.ref_name }}.tar.gz ElgatoLightControl-${{ github.ref_name }}
@@ -44,7 +44,7 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish -o ElgatoLightControl-${{ github.ref_name }} -p:Configuration=Release ElgatoLightControl
+          dotnet publish -o ElgatoLightControl-${{ github.ref_name }} -c Release ElgatoLightControl
 
       - name: Zip
         run: |
