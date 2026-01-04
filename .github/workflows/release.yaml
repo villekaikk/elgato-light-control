@@ -22,7 +22,7 @@ jobs:
         dotnet publish -o ElgatoLightControl-${{ github.ref_name }} -p:Configuration=Release ElgatoLightControl
 
     - name: Zip
-      run: tar -czf --exclude *.pdb elgato-light-control_${{ github.ref_name }}.tar.gz ElgatoLightControl-${{ github.ref_name }}
+      run: tar --exclude '*.pdb'-czf elgato-light-control_${{ github.ref_name }}.tar.gz ElgatoLightControl-${{ github.ref_name }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -48,7 +48,7 @@ jobs:
 
       - name: Zip
         run: |
-          $ExcludedItems = @('*.pdb')
+          $ExcludedItems = @('ElgatoLightControl-${{ github.ref_name }}\*.pdb')
           Compress-Archive -Path ElgatoLightControl-${{ github.ref_name }} -Exclude $ExcludedItems -DestinationPath elgato-light-control_${{ github.ref_name }}.zip
 
       - name: Upload artifacts
