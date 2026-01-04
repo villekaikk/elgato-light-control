@@ -22,17 +22,17 @@ jobs:
 
     - name: Publish
       run: |
-        dotnet publish -o ElgatoLightControl-${{github.ref_name}} -p:Configuration=Release ElgatoLightControl
+        dotnet publish -o ElgatoLightControl-${{ github.ref_name }} -p:Configuration=Release ElgatoLightControl
 
     - name: Zip
-      run: tar -czf elgato-light-control_${{github.ref_name}}.tar.gz ElgatoLightControl-${{github.ref_name}}
+      run: tar -czf elgato-light-control_${{ github.ref_name }}.tar.gz ElgatoLightControl-${{ github.ref_name }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ElgatoLightControl_${{github.ref_name}}-linux
+        name: ElgatoLightControl_${{ github.ref_name }}-linux
         path: |
-          elgato-light-control_${{github.ref_name}}.tar.gz
+          elgato-light-control_${ {github.ref_name }}.tar.gz
 
   build-windows:
     runs-on: windows-latest
@@ -50,18 +50,18 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish -o ElgatoLightControl-${{github.ref_name}} -p:Configuration=Release ElgatoLightControl
+          dotnet publish -o ElgatoLightControl-${{ github.ref_name }} -p:Configuration=Release ElgatoLightControl
 
       - name: Zip
         run: |
-          Compress-Archive ./ElgatoLightControl-${{github.ref_name}} elgato-light-control_${{github.ref_name}}.zip
+          Compress-Archive ./ElgatoLightControl-${{ github.ref_name }} elgato-light-control_${{ github.ref_name }}.zip
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ElgatoLightControl_${{github.ref_name}}-win
+          name: ElgatoLightControl_${{ github.ref_name }}-win
           path: |
-            elgato-light-control_${{github.ref_name}}.zip
+            elgato-light-control_${{ github.ref_name }}.zip
 
   release:
     runs-on: ubuntu-latest
@@ -70,12 +70,12 @@ jobs:
       - name: Pull artifact (Linux)
         uses: actions/download-artifact@v4
         with:
-          name: ElgatoLightControl_${{github.ref_name}}-linux
+          name: ElgatoLightControl_${{ github.ref_name }}-linux
 
       - name: Pull artifact (Windows)
         uses: actions/download-artifact@v4
         with:
-          name: ElgatoLightControl_${{github.ref_name}}-win
+          name: ElgatoLightControl_${{ github.ref_name }}-win
 
       - name: Debug print
         run: pwd && ls
@@ -83,10 +83,12 @@ jobs:
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
-          name: Release v${{github.ref_name}}
-          tag_name: ${{github.ref_name}}
+          name: Release v${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
           fail_on_unmatched_files: true
           make_latest: true
+          target_commitish: main
+          token: ${{ secrets.RELEASE_TOKEN} }
           files: |
-            elgato-light-control_${{github.ref_name}}.tar.gz
-            elgato-light-control_${{github.ref_name}}.zip
+            elgato-light-control_${{ github.ref_name }}.tar.gz
+            elgato-light-control_${{ github.ref_name }}.zip
