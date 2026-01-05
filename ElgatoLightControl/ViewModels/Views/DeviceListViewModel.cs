@@ -14,7 +14,8 @@ namespace ElgatoLightControl.ViewModels.Views;
 public class DeviceListViewModel: ReactiveObject
 {
     private readonly IElgatoDeviceService _deviceService;
-    private bool _initialSetupDone = false;
+    private bool _initialSetupDone;
+    private bool _loading;
 
     public delegate void DeviceSelectedEventHandler(ElgatoDeviceViewModel device);
     public event DeviceSelectedEventHandler DeviceSelectedEvent;
@@ -70,10 +71,14 @@ public class DeviceListViewModel: ReactiveObject
                 )
         ];
         SelectedDevice = Devices.First();
+        _loading = false;
+        _initialSetupDone = false;
     }
 
     public DeviceListViewModel(IElgatoDeviceService deviceService)
     {
+        _loading = false;
+        _initialSetupDone = false;
         _deviceService = deviceService;
         SelectedDevice = null;
         Devices = [];
@@ -86,8 +91,11 @@ public class DeviceListViewModel: ReactiveObject
     
     private async Task LoadDevicesAsync()
     {
+        if (_loading) return;
+        
         try
         {
+            _loading = true;
             if (!_initialSetupDone)
             {
                 StatusText = "Searching devices...";
@@ -103,6 +111,7 @@ public class DeviceListViewModel: ReactiveObject
         }
         finally
         {
+            _loading = false;
             StatusText = string.Empty;
             Loading = false;
             
