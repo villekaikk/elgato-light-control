@@ -24,10 +24,13 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
     {
         _device = null!;
         DeviceName = "Keylight Air";
-        FirmwareVersion = "1.0.0";
         Brightness = 40;
         Temperature = 200;
         DevicePowerState = "On";
+        IpAddress = "127.0.0.1";
+        MacAddress = "1A:2B:3C:4D:5E:6F";
+        FirmwareVersion = "1.0.0";
+        DeviceSerial = "12345678A";
         Task.Run(() => ToggleDevicePowerState(true));
     }
 
@@ -53,6 +56,9 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
             FirmwareVersion = device.AccessoryInfo.FirmwareVersion;
             Brightness = settings.Brightness;
             Temperature = settings.Temperature;
+            DeviceSerial = device.AccessoryInfo.SerialNumber;
+            MacAddress = device.AccessoryInfo.MacAddress;
+            IpAddress = device.DeviceConfig.IpAddress;
             await ToggleDevicePowerState(settings.On);
         }
         finally
@@ -146,6 +152,24 @@ public class KeylightSettingsViewModel : ReactiveObject, IDeviceSettingsViewMode
         }
     } = string.Empty;
 
+    public string IpAddress
+    {
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
+    } = string.Empty;
+
+    public string MacAddress
+    {
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
+    } = string.Empty;
+    
+    public string DeviceSerial
+    {
+        get;
+        private set => this.RaiseAndSetIfChanged(ref field, value);
+    } = string.Empty;
+    
     private void OnTimerTick(object? sender, EventArgs e)
     {
         _timer.Stop();

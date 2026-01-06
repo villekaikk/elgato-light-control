@@ -13,10 +13,13 @@ public class AccessoryInfoDto
     
     [JsonPropertyName("serialNumber")]
     public string SerialNumber { get; init; } = string.Empty;
+    
+    [JsonPropertyName("macAddress")]
+    public string MacAddress { get; init; } = string.Empty;
 }
 
 public static class AccessoryInfoDtoExtensions
 {
     public static AccessoryInfo ToAccessoryInfo(this AccessoryInfoDto dto)
-        => new(dto.ProductName, dto.FirmwareVersion, dto.SerialNumber); 
+        => new(dto.ProductName, dto.FirmwareVersion, dto.SerialNumber, dto.MacAddress); 
 }

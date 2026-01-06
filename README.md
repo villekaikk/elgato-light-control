@@ -1,6 +1,6 @@
 # <img src="ElgatoLightControl/Assets/icon.svg" width=25 height=25 > Elgato Light Control
 
-Desktop application for controlling Elgato lights. Targeted primarily for Linux, as there is no official software available but Windows build is also available as a Zip -file.
+Desktop application for controlling Elgato lights. Primarily targeted for Linux, as there is no official software available but Windows build is also available as a Zip file.
 
 ## Currently supported Elgate light devices:
 - Key Light Air

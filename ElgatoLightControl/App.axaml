@@ -54,6 +54,7 @@
                 />
             </FluentTheme.Palettes>
         </FluentTheme>
+        <StyleInclude Source="/Resources/Theme/StackPanel.axaml"></StyleInclude>
     </Application.Styles>
              
 </Application>

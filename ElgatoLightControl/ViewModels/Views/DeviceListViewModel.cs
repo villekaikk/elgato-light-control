@@ -60,13 +60,13 @@ public class DeviceListViewModel: ReactiveObject
             new ElgatoDeviceViewModel(
                 new ElgatoDeviceConfig("Test device 1", "1.0.0"),
                 new KeylightSettings(45, 200, true),
-                new AccessoryInfo("Test Keylight 1", "1.0.0", "1234abcd"),
+                new AccessoryInfo("Test Keylight 1", "1.0.0", "1234abcd", "1A:2B:3C:4D:5E:6F"),
                 ElgatoDeviceType.KeylightAir
                 ),
             new ElgatoDeviceViewModel(
                 new ElgatoDeviceConfig("Test device 2", "1.0.1"),
                 new KeylightSettings(77, 150, false),
-                new AccessoryInfo("Test Keylight 2", "1.0.1", "1234abcd"),
+                new AccessoryInfo("Test Keylight 2", "1.0.1", "1234abcd", "1A:2B:3C:4D:5E:6F"),
                 ElgatoDeviceType.KeylightAir
                 )
         ];
